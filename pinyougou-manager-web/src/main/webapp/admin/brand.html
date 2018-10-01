@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="../css/style.css">
     <script type="text/javascript" src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
-    <script type="text/javascript" src="../plugins/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../plugins/angularjs/angular-1.6.3.min.js"/>
+    <script type="text/javascript" src="../plugins/bootstrap/js/bootstrap.min.js"></script>
 
 </head>
 <body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="brandController"
@@ -62,7 +62,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="brand in list">
+            <tr ng-repeat="brand in brands">
                 <td><input type="checkbox"></td>
                 <td>{{brand.id}}</td>
                 <td>{{brand.name}}</td>
@@ -120,10 +120,10 @@
             //查询品牌列表
             $scope.findAll = function () {
                 $http({
-                    url: '../brand/findAll.do',
-                    method: 'get'
+                    url: '../brand/list.do',
+                    method: 'get',
                 }).then(function (response) {
-                        $scope.list = response;
+                        $scope.brands = response.data;
                     }, function (error) {
                         console.error(error);
                     }
