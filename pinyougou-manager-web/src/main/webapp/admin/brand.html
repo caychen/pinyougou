@@ -9,13 +9,16 @@
     <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
     <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="../css/style.css">
-    <script type="text/javascript" src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="../plugins/jQuery/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="../plugins/angularjs/angular-1.6.3.min.js"/>
-    <script type="text/javascript" src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- 分页组件 -->
+    <script type="text/javascript" src="../plugins/angularjs/pagination.js"></script>
+    <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
 
 </head>
-<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="brandController"
-      ng-init="findAll()">
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="brandController">
 
 <!-- .box-body -->
 <div class="box-header with-border">
@@ -76,7 +79,7 @@
             </tbody>
         </table>
         <!--数据列表/-->
-
+        <tm-pagination conf="paginationConf"></tm-pagination>
 
     </div>
     <!-- 数据表格 /-->
@@ -114,7 +117,7 @@
 </div>
 
 <script type="text/javascript">
-    angular.module('pinyougou', [])
+    angular.module('pinyougou', ['pagination'])
         .controller('brandController', ['$scope', '$http', function ($scope, $http) {
 
             //查询品牌列表
@@ -128,8 +131,42 @@
                         console.error(error);
                     }
                 );
+            };
+
+            //分页控件配置：
+            //  currentPage： 当前页
+            //  totalItems： 总记录数
+            //  itemsPerPage： 每页记录数
+            //  perPageOptions： 分页选项
+            //  onChange: 当页码变更后自动触发的方法
+            $scope.paginationConf = {
+                currentPage: 1,
+                totalItems: 10,
+                itemsPerPage: 10,
+                perPageOptions: [10, 20, 30, 40, 50],
+                onChange: function(){
+                    $scope.reload();
+                }
+            };
+
+            $scope.reload = function(){
+                $scope.findPage($scope.paginationConf.currentPage, $scope.paginationConf.itemsPerPage);//重新加载
             }
-        }])
+
+            //分页
+            $scope.findPage = function(page, size){
+                $http({
+                    url: '../brand/page.do?page=' + page + '&size=' + size,
+                    method: 'get'
+                }).then(function(response){
+                    $scope.brands = response.data.rows;
+
+                    $scope.paginationConf.totalItems = response.data.total;
+                }, function(error){
+                    console.error(error);
+                });
+            }
+        }]);
 </script>
 
 </body>

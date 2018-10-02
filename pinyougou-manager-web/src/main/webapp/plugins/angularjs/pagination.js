@@ -50,19 +50,14 @@ angular.module('pagination', []).directive('tmPagination',[function(){
 
             // pageList数组
             function getPagination(newValue, oldValue) {
-                
-
                 // conf.currentPage
                 scope.conf.currentPage = parseInt(scope.conf.currentPage) ? parseInt(scope.conf.currentPage) : 1;
-                
-
 
                 // conf.totalItems
                 scope.conf.totalItems = parseInt(scope.conf.totalItems) ? parseInt(scope.conf.totalItems) : 0;
 
                 // conf.itemsPerPage (default:15)
                 scope.conf.itemsPerPage = parseInt(scope.conf.itemsPerPage) ? parseInt(scope.conf.itemsPerPage) : 15;
-                
 
                 // numberOfPages
                 scope.conf.numberOfPages = Math.ceil(scope.conf.totalItems/scope.conf.itemsPerPage);
@@ -140,8 +135,6 @@ angular.module('pagination', []).directive('tmPagination',[function(){
                 }
 
                 if(scope.conf.onChange){
-                    
-
                     // 防止初始化两次请求问题
                     if(!(oldValue != newValue && oldValue[0] == 0)) {
                         scope.conf.onChange();
@@ -172,23 +165,13 @@ angular.module('pagination', []).directive('tmPagination',[function(){
                 }
             };
 
-            
-
             scope.$watch(function() {
-                
-
                 if(!scope.conf.totalItems) {
                     scope.conf.totalItems = 0;
                 }
 
-
                 var newValue = scope.conf.totalItems + ' ' +  scope.conf.currentPage + ' ' + scope.conf.itemsPerPage;
-                
-                
                 return newValue;
-
-                
-
 
             }, getPagination);
 
