@@ -11,6 +11,11 @@ import java.util.List;
  */
 public interface IBrandService {
 
+    /**
+     * 查找所有品牌分类
+     *
+     * @return
+     */
     List<TbBrand> findAll();
 
     /**
@@ -21,4 +26,11 @@ public interface IBrandService {
      * @return
      */
     PageResult findPage(int pageNum, int pageSize);
+
+    /**
+     * 增加品牌
+     *
+     * @param brand
+     */
+    void add(TbBrand brand);
 }
