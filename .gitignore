@@ -4,6 +4,8 @@
 # Log file
 *.log
 
+target/
+
 # BlueJ files
 *.ctxt
 
@@ -89,3 +91,29 @@ fabric.properties
 
 # Android studio 3.1+ serialized cache file
 .idea/caches/build_file_checksums.ser
+
+# kdiff3 ignore
+*.orig
+
+# eclipse ignore
+.setting
+.project
+.classpath
+
+# idea
+.idea/
+/idea/
+*.ipr
+*.iml
+*.iws
+
+# temp file
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+
+# system ignore
+*.DS_Store
+Thumbs.db
