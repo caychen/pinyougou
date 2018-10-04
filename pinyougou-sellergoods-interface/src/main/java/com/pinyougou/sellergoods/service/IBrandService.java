@@ -33,4 +33,27 @@ public interface IBrandService {
      * @param brand
      */
     void add(TbBrand brand);
+
+    /**
+     *
+     * 根据id查找品牌
+     *
+     * @param id
+     * @return
+     */
+    TbBrand findOne(Long id);
+
+    /**
+     * 更新品牌
+     *
+     * @param brand
+     */
+    void update(TbBrand brand);
+
+    /**
+     * 批量删除品牌
+     *
+     * @param ids
+     */
+    void delete(Long[] ids);
 }

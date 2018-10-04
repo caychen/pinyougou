@@ -1,6 +1,7 @@
 package com.pinyougou.manager.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSONArray;
 import com.pinyougou.entity.TbBrand;
 import com.pinyougou.page.PageResult;
 import com.pinyougou.result.JsonResult;
@@ -8,6 +9,7 @@ import com.pinyougou.sellergoods.service.IBrandService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -31,7 +33,7 @@ public class BrandController {
         return brandService.findPage(page, size);
     }
 
-    @PostMapping("/add")
+    @PostMapping("/")
     public JsonResult add(@RequestBody TbBrand brand) {
         log.info("添加品牌...");
         try {
@@ -44,4 +46,40 @@ public class BrandController {
             return JsonResult.fail("添加失败");
         }
     }
+
+    @GetMapping("/{id}")
+    public TbBrand findOne(@PathVariable Long id){
+        log.info("查找Id为{}的品牌数据！", id);
+        return brandService.findOne(id);
+    }
+
+    @PutMapping("/{id}")
+    public JsonResult update(@PathVariable Long id, @RequestBody TbBrand brand){
+        log.info("修改品牌...");
+        try {
+            brand.setId(id);
+            brandService.update(brand);
+            log.info("修改成功...");
+            return JsonResult.ok("修改成功");
+        } catch (Exception e) {
+            log.error("修改失败：{}", e.getMessage());
+            e.printStackTrace();
+            return JsonResult.fail("修改失败");
+        }
+    }
+
+    @DeleteMapping("/")
+    public JsonResult delete(Long[] ids){
+        log.info("删除品牌：{}", Arrays.asList(ids));
+        try {
+            brandService.delete(ids);
+            log.info("删除成功...");
+            return JsonResult.ok("删除成功");
+        } catch (Exception e) {
+            log.error("删除失败：{}", e.getMessage());
+            e.printStackTrace();
+            return JsonResult.fail("删除失败");
+        }
+    }
+
 }

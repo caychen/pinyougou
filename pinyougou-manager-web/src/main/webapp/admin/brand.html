@@ -43,7 +43,7 @@
                     <button type="button" class="btn btn-default" title="新建" data-toggle="modal"
                             data-target="#editModal" ng-click="entity={}"><i class="fa fa-file-o"></i> 新建
                     </button>
-                    <button type="button" class="btn btn-default" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
+                    <button type="button" class="btn btn-default" title="删除" ng-click="del()"><i class="fa fa-trash-o"></i> 删除</button>
                     <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i
                             class="fa fa-refresh"></i> 刷新
                     </button>
@@ -72,12 +72,12 @@
             </thead>
             <tbody>
             <tr ng-repeat="brand in brands">
-                <td><input type="checkbox"></td>
+                <td><input type="checkbox" ng-click="updateSelection($event, brand.id)"></td>
                 <td><span ng-bind="{{brand.id}}"></span></td>
                 <td><span ng-bind="brand.name"></span></td>
                 <td><span ng-bind="brand.firstChar"></span></td>
                 <td class="text-center">
-                    <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal">修改
+                    <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" ng-click="findOne(brand.id)">修改
                     </button>
                 </td>
             </tr>
@@ -89,7 +89,6 @@
 
     </div>
     <!-- 数据表格 /-->
-
 
 </div>
 <!-- /.box-body -->
@@ -115,7 +114,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" ng-click="add()">保存</button>
+                <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" ng-disabled="entity.name === undefined || entity.name === '' || entity.firstChar === undefined || entity.firstChar === '' " ng-click="save()">保存</button>
                 <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
             </div>
         </div>
@@ -129,7 +128,7 @@
             //查询品牌列表
             $scope.findAll = function () {
                 $http({
-                    url: '../brand/list.do',
+                    url: '../brand/list',
                     method: 'get',
                 }).then(function (response) {
                         $scope.brands = response.data;
@@ -158,12 +157,12 @@
             //重新加载
             $scope.reload = function(){
                 $scope.findPage($scope.paginationConf.currentPage, $scope.paginationConf.itemsPerPage);//重新加载
-            }
+            };
 
             //分页
             $scope.findPage = function(page, size){
                 $http({
-                    url: '../brand/page.do?page=' + page + '&size=' + size,
+                    url: '../brand/page?page=' + page + '&size=' + size,
                     method: 'get'
                 }).then(function(response){
                     $scope.brands = response.data.rows;
@@ -172,10 +171,11 @@
                 }, function(err){
                     console.error(err);
                 });
-            }
+            };
 
-            //添加品牌
-            $scope.add = function(){
+            //添加品牌/修改品牌
+            $scope.save = function(){
+                //判断品牌名称
                 if(typeof($scope.entity.name) === 'undefined' || $scope.entity.name === ''){
                     // swal("请输入品牌名称", "", "warning");
                     swal({
@@ -191,6 +191,7 @@
                     return;
                 }
 
+                //判断品牌首字母
                 if(typeof($scope.entity.firstChar) === 'undefined' || $scope.entity.firstChar === ''){
                     //swal("请输入品牌首字母", "", "warning");
                     swal({
@@ -207,12 +208,12 @@
                 }
 
                 $http({
-                    url:'../brand/add.do',
-                    method:'post',
+                    url: '../brand/' + ($scope.entity.id != null ? $scope.entity.id : ''),
+                    method: $scope.entity.id != null ? 'put' : 'post',
                     data: $scope.entity
                 }).then(function(response){
                    if(response.data.success){
-                       swal("品牌添加成功!", "", "success");
+                       swal("品牌保存成功!", "", "success");
                        $scope.reload();
                    }else{
                        swal("品牌添加成功!", "", "error");
@@ -220,6 +221,63 @@
                 }, function(err){
                     swal("网络异常，请稍后重试!", "", "error");
                 });
+            };
+
+            $scope.findOne = function(id){
+                $http({
+                    url:'../brand/' + id,
+                    method:'get'
+                }).then(function(response){
+                    $scope.entity = response.data;
+                }, function(err){
+                    swal("网络异常，请稍后重试!", "", "error");
+                })
+            };
+
+            //用户勾选的品牌id集合
+            $scope.selectIds = [];
+
+            $scope.updateSelection = function($event, id){
+                if($event.target.checked){
+                    $scope.selectIds.push(id);
+                }else{
+                    $scope.selectIds.splice($scope.selectIds.indexOf(id), 1);
+                }
+            };
+
+            //批量删除
+            $scope.del = function(){
+                if($scope.selectIds.length > 0) {
+                    $http({
+                        url: '../brand/',
+                        method: 'delete',
+                        data: {
+                            ids: $scope.selectIds
+                        },
+
+                        //post请求头
+                        /*headers: {
+                            'content-type': 'application/x-www-form-urlencoded'
+                        },
+                        transformRequest: function (params) {
+                            var str = [];
+                            for (var key in params) {
+                                str.push(encodeURIComponent(key) + "=" + encodeURIComponent(params[key]));
+                            }
+                            return str.join("&");
+                        }*/
+                    }).then(function (response) {
+                        if (response.data.success) {
+                            $scope.reload();
+                        } else {
+                            swal(response.data.message, "", "error");
+                        }
+                    }, function (err) {
+                        swal("网络异常，请稍后重试!", "", "error");
+                    });
+                }else{
+                    swal("请至少选择一项!", "", "warning");
+                }
             }
         }]);
 </script>
