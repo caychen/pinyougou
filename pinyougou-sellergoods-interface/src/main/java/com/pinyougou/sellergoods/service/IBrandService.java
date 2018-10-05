@@ -19,13 +19,14 @@ public interface IBrandService {
     List<TbBrand> findAll();
 
     /**
-     * 品牌分页
+     * 根据条件查询品牌并分页
      *
+     * @param brand     查询条件
      * @param pageNum   当前页
      * @param pageSize  每页记录数
      * @return
      */
-    PageResult findPage(int pageNum, int pageSize);
+    PageResult search(TbBrand brand, int pageNum, int pageSize);
 
     /**
      * 增加品牌

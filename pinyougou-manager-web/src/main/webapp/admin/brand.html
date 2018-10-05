@@ -52,7 +52,7 @@
         </div>
         <div class="box-tools pull-right">
             <div class="has-feedback">
-
+                品牌名称: <input ng-model="brand.name"/> 品牌首字母: <input ng-model="brand.firstChar"/> <button class="btn btn-default" ng-click="reload()">查询</button>
             </div>
         </div>
         <!--工具栏/-->
@@ -109,7 +109,7 @@
                     </tr>
                     <tr>
                         <td>首字母</td>
-                        <td><input class="form-control" placeholder="首字母" ng-model="entity.firstChar"></td>
+                        <td><input class="form-control" placeholder="首字母" ng-model="entity.firstChar" ng-maxlength="1"></td>
                     </tr>
                 </table>
             </div>
@@ -156,14 +156,16 @@
 
             //重新加载
             $scope.reload = function(){
-                $scope.findPage($scope.paginationConf.currentPage, $scope.paginationConf.itemsPerPage);//重新加载
+                $scope.search($scope.brand, $scope.paginationConf.currentPage, $scope.paginationConf.itemsPerPage);//重新加载
             };
 
-            //分页
-            $scope.findPage = function(page, size){
+            $scope.brand = {};
+            //分页查询
+            $scope.search = function(brand, page, size){
                 $http({
-                    url: '../brand/page?page=' + page + '&size=' + size,
-                    method: 'get'
+                    url: '../brand/search?page=' + page + '&size=' + size,
+                    method: 'post',
+                    data: $scope.brand
                 }).then(function(response){
                     $scope.brands = response.data.rows;
 
@@ -248,37 +250,47 @@
             //批量删除
             $scope.del = function(){
                 if($scope.selectIds.length > 0) {
-                    $http({
-                        url: '../brand/',
-                        method: 'delete',
-                        data: {
-                            ids: $scope.selectIds
-                        },
+                    swal({
+                        title: '确定要删除所选项吗？',
+                        text: '你将无法恢复它！',
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '确定删除！',
+                        cancelButtonText: '取消'
+                    }, function(){
+                        $http({
+                            url: '../brand/',
+                            method: 'delete',
+                            headers: {
+                                'Content-Type': 'application/json;charset=UTF-8'
+                            },
+                            data: $scope.selectIds
+                        }).then(function (response) {
+                            if (response.data.success) {
+                                swal({
+                                    title:'删除成功!',
+                                    type:'success',
+                                    confirmButtonColor: "#DD6B55",
+                                    confirmButtonText: "确认",
+                                }, function(isConfirm){
+                                    if(isConfirm){
+                                        $scope.reload();
+                                    }
+                                });
 
-                        //post请求头
-                        /*headers: {
-                            'content-type': 'application/x-www-form-urlencoded'
-                        },
-                        transformRequest: function (params) {
-                            var str = [];
-                            for (var key in params) {
-                                str.push(encodeURIComponent(key) + "=" + encodeURIComponent(params[key]));
+                            } else {
+                                swal(response.data.message, "", "error");
                             }
-                            return str.join("&");
-                        }*/
-                    }).then(function (response) {
-                        if (response.data.success) {
-                            $scope.reload();
-                        } else {
-                            swal(response.data.message, "", "error");
-                        }
-                    }, function (err) {
-                        swal("网络异常，请稍后重试!", "", "error");
+                        }, function (err) {
+                            swal("网络异常，请稍后重试!", "", "error");
+                        });
                     });
                 }else{
                     swal("请至少选择一项!", "", "warning");
                 }
-            }
+            };
         }]);
 </script>
 

@@ -26,11 +26,12 @@ public class BrandController {
         return brandService.findAll();
     }
 
-    @GetMapping("/page")
-    public PageResult findPage(@RequestParam(defaultValue = "1", required = false) int page,
+    @PostMapping("/search")
+    public PageResult findPage(@RequestBody TbBrand brand,
+                               @RequestParam(defaultValue = "1", required = false) int page,
                                @RequestParam(defaultValue = "10", required = false) int size) {
         log.info("分页请求品牌...");
-        return brandService.findPage(page, size);
+        return brandService.search(brand, page, size);
     }
 
     @PostMapping("/")
@@ -69,7 +70,7 @@ public class BrandController {
     }
 
     @DeleteMapping("/")
-    public JsonResult delete(Long[] ids){
+    public JsonResult delete(@RequestBody Long[] ids){
         log.info("删除品牌：{}", Arrays.asList(ids));
         try {
             brandService.delete(ids);
