@@ -22,7 +22,7 @@ public class BrandController {
 
     @GetMapping("/list")
     public List<TbBrand> findAll() {
-        log.info("请求/brand/list.do...");
+        log.info("请求/brand/list...");
         return brandService.findAll();
     }
 
@@ -30,13 +30,13 @@ public class BrandController {
     public PageResult findPage(@RequestBody TbBrand brand,
                                @RequestParam(defaultValue = "1", required = false) int page,
                                @RequestParam(defaultValue = "10", required = false) int size) {
-        log.info("分页请求品牌...");
+        log.info("分页请求品牌数据...");
         return brandService.search(brand, page, size);
     }
 
     @PostMapping("/")
     public JsonResult add(@RequestBody TbBrand brand) {
-        log.info("添加品牌...");
+        log.info("添加品牌数据...");
         try {
             brandService.add(brand);
             log.info("添加成功...");
@@ -56,7 +56,7 @@ public class BrandController {
 
     @PutMapping("/{id}")
     public JsonResult update(@PathVariable Long id, @RequestBody TbBrand brand){
-        log.info("修改品牌...");
+        log.info("修改品牌数据...");
         try {
             brand.setId(id);
             brandService.update(brand);
@@ -71,7 +71,7 @@ public class BrandController {
 
     @DeleteMapping("/")
     public JsonResult delete(@RequestBody Long[] ids){
-        log.info("删除品牌：{}", Arrays.asList(ids));
+        log.info("删除品牌数据：{}", Arrays.asList(ids));
         try {
             brandService.delete(ids);
             log.info("删除成功...");

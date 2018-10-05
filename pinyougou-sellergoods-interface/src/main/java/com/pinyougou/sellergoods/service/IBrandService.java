@@ -7,7 +7,6 @@ import java.util.List;
 
 /**
  * 品牌接口
- *
  */
 public interface IBrandService {
 
@@ -21,9 +20,9 @@ public interface IBrandService {
     /**
      * 根据条件查询品牌并分页
      *
-     * @param brand     查询条件
-     * @param pageNum   当前页
-     * @param pageSize  每页记录数
+     * @param brand    查询条件
+     * @param pageNum  当前页
+     * @param pageSize 每页记录数
      * @return
      */
     PageResult search(TbBrand brand, int pageNum, int pageSize);
@@ -36,7 +35,6 @@ public interface IBrandService {
     void add(TbBrand brand);
 
     /**
-     *
      * 根据id查找品牌
      *
      * @param id
