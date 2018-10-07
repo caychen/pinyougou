@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 类型模版
+ * 商品类型模版
  *
  */
 @Data
@@ -15,10 +15,10 @@ public class TbTypeTemplate implements Serializable {
     //模板名称
     private String name;
 
-    //关联规格ID
+    //关联规格(json格式)
     private String specIds;
 
-    //关联品牌ID
+    //关联品牌(json格式)
     private String brandIds;
 
     //自定义属性

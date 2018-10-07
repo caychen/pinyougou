@@ -39,4 +39,11 @@ app.service('brandService', ['$http', function ($http) {
             data: selectIds
         });
     };
+
+    this.selectBrandOptionList = function(){
+        return $http({
+            url: '../brand/options',
+            method: 'get'
+        });
+    };
 }])

@@ -67,7 +67,7 @@ app.controller('brandController', ['$scope', '$controller', 'brandService', func
                 swal("品牌保存成功!", "", "success");
                 $scope.reload();
             } else {
-                swal("品牌添加成功!", "", "error");
+                swal("品牌保存失败!", "", "error");
             }
         }, function (err) {
             swal("网络异常，请稍后重试!", "", "error");

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Component("brandService")
@@ -70,5 +71,10 @@ public class BrandServiceImpl implements IBrandService {
     @Transactional
     public void delete(Long[] idArray) {
         Lists.newArrayList(idArray).stream().forEach(id -> tbBrandMapper.deleteByPrimaryKey(id));
+    }
+
+    @Override
+    public List<Map> selectBrandOptionList() {
+        return tbBrandMapper.selectBrandOptionList();
     }
 }

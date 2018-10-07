@@ -1,5 +1,5 @@
 //服务层
-app.service('specificationService', function ($http) {
+app.service('specificationService', ['$http', function ($http) {
 
     //读取列表数据绑定到表单中
     this.findAll = function () {
@@ -58,6 +58,14 @@ app.service('specificationService', function ($http) {
     //下拉列表
     this.selectOptionList = function () {
         return $http.get('../specification/selectOptionList.do');
+        return $http({
+            url: '../specification/',
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+            },
+            data: ids
+        });
     }
 
-});
+}]);

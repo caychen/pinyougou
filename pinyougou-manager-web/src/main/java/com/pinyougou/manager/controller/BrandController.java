@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/brand")
@@ -81,6 +82,11 @@ public class BrandController {
             e.printStackTrace();
             return JsonResult.fail("删除失败");
         }
+    }
+
+    @GetMapping("/options")
+    public List<Map> selectBrandOptionList(){
+        return brandService.selectBrandOptionList();
     }
 
 }
