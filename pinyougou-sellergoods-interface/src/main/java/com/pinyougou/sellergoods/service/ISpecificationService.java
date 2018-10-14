@@ -59,6 +59,11 @@ public interface ISpecificationService {
     void delete(Long[] ids);
 
 
-    List<Map> selectOptionList();
+    /**
+     * 返回规格下拉列表，格式： [data:[{id:'', text:''},{id:'',text:''}]]
+     *
+     * @return
+     */
+    List<Map> selectSpecificationOptionList();
 
 }

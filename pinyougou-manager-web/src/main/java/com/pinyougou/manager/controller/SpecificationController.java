@@ -114,9 +114,9 @@ public class SpecificationController {
 	}
 
 	
-	@RequestMapping("/selectOptionList")
-	public List<Map> selectOptionList(){
-		return specificationService.selectOptionList();
+	@GetMapping("/options")
+	public List<Map> selectSpecificationOptionList(){
+		return specificationService.selectSpecificationOptionList();
 	}
 	
 }

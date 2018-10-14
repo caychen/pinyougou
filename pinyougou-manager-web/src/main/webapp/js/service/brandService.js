@@ -46,4 +46,5 @@ app.service('brandService', ['$http', function ($http) {
             method: 'get'
         });
     };
-}])
+
+}]);

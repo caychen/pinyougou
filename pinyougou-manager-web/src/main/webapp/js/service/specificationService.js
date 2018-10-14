@@ -56,15 +56,10 @@ app.service('specificationService', ['$http', function ($http) {
     };
 
     //下拉列表
-    this.selectOptionList = function () {
-        return $http.get('../specification/selectOptionList.do');
+    this.selectSpecificationOptionList = function () {
         return $http({
-            url: '../specification/',
+            url: '../specification/options',
             method: 'get',
-            headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-            },
-            data: ids
         });
     }
 

@@ -28,9 +28,10 @@ app.service('typeTemplateService', ['$http', function ($http) {
 
     //保存
     this.save = function (entity) {
+        console.log(entity);
         return $http({
-            url: '../typeTemplate/' + (entity.specification.id != null ? entity.specification.id : ''),
-            method: entity.specification.id != null ? 'put' : 'post',
+            url: '../typeTemplate/' + (entity.id != null ? entity.id : ''),
+            method: entity.id != null ? 'put' : 'post',
             data: entity
         });
     };

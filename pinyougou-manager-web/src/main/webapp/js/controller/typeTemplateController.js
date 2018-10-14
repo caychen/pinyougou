@@ -46,7 +46,7 @@ app.controller('typeTemplateController', function ($scope, $controller, typeTemp
             if (response.data.success) {
                 swal("模板保存成功!", "", "success");
                 //重新查询
-                $scope.reloadList();//重新加载
+                $scope.reload();//重新加载
             } else {
                 swal("模板保存失败!", "", "success");
             }
@@ -97,12 +97,12 @@ app.controller('typeTemplateController', function ($scope, $controller, typeTemp
     };
 
 
-    $scope.brandList = {data: [{id: 1, text: '联想'}, {id: 2, text: '华为'}, {id: 3, text: '小米'}]};//品牌列表
+    $scope.brandList = {data: []};//品牌列表
 
     //读取品牌列表
     $scope.findBrandList = function () {
         brandService.selectBrandOptionList().then( function (response) {
-            $scope.brandList = {data: response.data};
+            $scope.brandList.data = response.data;
         }, function(err){
             swal("网络异常，请稍后重试!", "", "error");
         });
@@ -112,11 +112,11 @@ app.controller('typeTemplateController', function ($scope, $controller, typeTemp
 
     //读取规格列表
     $scope.findSpecList = function () {
-        specificationService.selectOptionList().success(
-            function (response) {
-                $scope.specList = {data: response};
-            }
-        );
+        specificationService.selectSpecificationOptionList().then( function (response) {
+            $scope.specList.data = response.data;
+        }, function(err){
+            swal("网络异常，请稍后重试!", "", "error");
+        });
     };
 
     //增加扩展属性行
@@ -125,7 +125,7 @@ app.controller('typeTemplateController', function ($scope, $controller, typeTemp
     };
 
     //删除扩展属性行
-    $scope.deleTableRow = function (index) {
+    $scope.delTableRow = function (index) {
         $scope.entity.customAttributeItems.splice(index, 1);
     };
 

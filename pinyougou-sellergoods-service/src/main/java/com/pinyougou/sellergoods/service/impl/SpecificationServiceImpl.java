@@ -157,10 +157,9 @@ public class SpecificationServiceImpl implements ISpecificationService {
 
 
     @Override
-    public List<Map> selectOptionList() {
+    public List<Map> selectSpecificationOptionList() {
         // TODO Auto-generated method stub
-        //return specificationMapper.selectOptionList();
-        return null;
+        return specificationMapper.selectSpecificationOptionList();
     }
 
 }

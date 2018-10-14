@@ -31,4 +31,19 @@ app.controller('baseController', ['$scope', function ($scope) {
         }
     };
 
+    $scope.collectValue = function (jsonToString, key) {
+        if(jsonToString == null || jsonToString === ''){
+            return null;
+        }
+
+        var json = JSON.parse(jsonToString);
+
+        var value = '';
+        for (var i = 0; i < json.length; ++i) {
+            value += json[i][key] + ",";
+        }
+        value = value.substring(0, value.length - 1);
+        return value;
+    }
+
 }]);

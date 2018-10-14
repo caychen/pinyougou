@@ -57,5 +57,10 @@ public interface IBrandService {
      */
     void delete(Long[] ids);
 
+    /**
+     * 返回品牌下拉列表，格式： [data:[{id:'', text:''},{id:'',text:''}]]
+     *
+     * @return
+     */
     List<Map> selectBrandOptionList();
 }
