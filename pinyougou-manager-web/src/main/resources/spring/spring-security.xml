@@ -21,7 +21,7 @@
 
         <form-login login-page="/login.html" default-target-url="/admin/index.html" authentication-failure-url="/login.html" always-use-default-target="true"/>
 
-        <csrf disabled="false"/>
+        <csrf disabled="true"/>
 
         <headers>
             <!-- 允许内嵌框架页 -->
@@ -34,7 +34,7 @@
 
     <authentication-manager>
         <authentication-provider>
-            <user-service>
+            <user-service >
                 <user name="admin" authorities="ROLE_ADMIN" password="123456"/>
             </user-service>
         </authentication-provider>

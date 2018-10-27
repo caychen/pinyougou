@@ -29,4 +29,5 @@
     <dubbo:annotation package="com.pinyougou.manager.controller" />
 
     <mvc:default-servlet-handler />
+
 </beans>
