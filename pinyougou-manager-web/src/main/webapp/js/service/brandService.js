@@ -40,7 +40,7 @@ app.service('brandService', ['$http', function ($http) {
         });
     };
 
-    this.selectBrandOptionList = function(){
+    this.selectBrandOptionList = function () {
         return $http({
             url: '../brand/options',
             method: 'get'

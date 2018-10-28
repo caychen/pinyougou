@@ -32,7 +32,7 @@ public class TbSeller implements Serializable {
     //公司电话
     private String telephone;
 
-    //状态
+    //状态, 0：未审核，1：审核通过，2：审核不通过，3：关闭（违法违禁等原因）
     private String status;
 
     //详细地址
@@ -77,10 +77,12 @@ public class TbSeller implements Serializable {
     //法定代表人身份证
     private String legalPersonCardId;
 
-    //开户行账号名称
+    //开户行账号（银行账号）
     private String bankUser;
 
     //开户行
     private String bankName;
 
+    //开户行支行
+    private String subBankName;
 }

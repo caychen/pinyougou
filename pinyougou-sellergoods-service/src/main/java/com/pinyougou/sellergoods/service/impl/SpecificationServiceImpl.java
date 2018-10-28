@@ -13,6 +13,7 @@ import com.pinyougou.mapper.TbSpecificationMapper;
 import com.pinyougou.mapper.TbSpecificationOptionMapper;
 import com.pinyougou.page.PageResult;
 import com.pinyougou.sellergoods.service.ISpecificationService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,10 +55,9 @@ public class SpecificationServiceImpl implements ISpecificationService {
         TbSpecificationExample.Criteria criteria = example.createCriteria();
 
         if (specification != null) {
-            if (specification.getSpecName() != null && specification.getSpecName().length() > 0) {
+            if (StringUtils.isNotBlank(specification.getSpecName())) {
                 criteria.andSpecNameLike("%" + specification.getSpecName() + "%");
             }
-
         }
 
         Page<TbSpecification> page = (Page<TbSpecification>) specificationMapper.selectByExample(example);
