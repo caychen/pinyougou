@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -118,6 +119,8 @@ public class SellerServiceImpl implements ISellerService {
 
     @Override
     public void add(TbSeller seller) {
+        seller.setStatus("0");//待审核
+        seller.setCreateTime(new Date());//申请时间
         tbSellerMapper.insert(seller);
     }
 

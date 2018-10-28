@@ -16,9 +16,6 @@ import java.util.List;
 @Slf4j
 public class SellerController {
 
-    @Reference
-    private ISellerService sellerService;
-
     /**
      * 返回全部列表
      *
@@ -28,6 +25,9 @@ public class SellerController {
     public List<TbSeller> findAll() {
         return sellerService.findAll();
     }
+
+    @Reference
+    private ISellerService sellerService;
 
 
     /**

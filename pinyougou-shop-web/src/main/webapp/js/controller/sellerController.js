@@ -43,14 +43,23 @@ app.controller('sellerController', ['$scope', '$controller', 'sellerService', fu
     $scope.save = function () {
         sellerService.save($scope.entity).then(function (response) {
                 if (response.data.success) {
-                    swal("商家保存成功!", "", "success");
-                    //如果注册成功，跳转到登录页
-                    if ($scope.entity.id != null) {
-                        location.href = "shoplogin.html";
-                    } else {
-                        //更新
-                        $scope.reload();
-                    }
+                    swal({
+                        title: '商家保存成功!',
+                        type: 'success',
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "确认",
+                    }, function (isConfirm) {
+                        if (isConfirm) {
+                            // swal("商家保存成功!", "", "success");
+                            //如果注册成功，跳转到登录页
+                            if ($scope.entity.id == null) {
+                                location.href = "shoplogin.html";
+                            } else {
+                                //更新
+                                $scope.reload();
+                            }
+                        }
+                    });
                 } else {
                     swal("商家保存失败!", "", "error");
                 }
