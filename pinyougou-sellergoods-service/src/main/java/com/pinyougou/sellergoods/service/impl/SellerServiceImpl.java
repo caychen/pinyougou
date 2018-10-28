@@ -12,6 +12,7 @@ import com.pinyougou.sellergoods.service.ISellerService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -118,6 +119,7 @@ public class SellerServiceImpl implements ISellerService {
     }
 
     @Override
+    @Transactional
     public void add(TbSeller seller) {
         seller.setStatus("0");//待审核
         seller.setCreateTime(new Date());//申请时间
@@ -125,6 +127,7 @@ public class SellerServiceImpl implements ISellerService {
     }
 
     @Override
+    @Transactional
     public void update(TbSeller seller) {
         tbSellerMapper.updateByPrimaryKey(seller);
     }
@@ -135,7 +138,17 @@ public class SellerServiceImpl implements ISellerService {
     }
 
     @Override
+    @Transactional
     public void delete(String[] ids) {
         Lists.newArrayList(ids).stream().forEach(id -> tbSellerMapper.deleteByPrimaryKey(id));
+    }
+
+    @Override
+    @Transactional
+    public void updateStatus(String sellerId, String status) {
+        TbSeller seller = new TbSeller();
+        seller.setSellerId(sellerId);
+        seller.setStatus(status);
+        tbSellerMapper.updateByPrimaryKeySelective(seller);
     }
 }

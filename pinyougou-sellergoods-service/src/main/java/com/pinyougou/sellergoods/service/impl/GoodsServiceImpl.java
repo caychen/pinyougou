@@ -12,6 +12,7 @@ import com.pinyougou.sellergoods.service.IGoodsService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -73,11 +74,13 @@ public class GoodsServiceImpl implements IGoodsService {
     }
 
     @Override
+    @Transactional
     public void add(TbGoods goods) {
         tbGoodsMapper.insert(goods);
     }
 
     @Override
+    @Transactional
     public void update(TbGoods goods) {
         tbGoodsMapper.updateByPrimaryKey(goods);
     }
@@ -88,6 +91,7 @@ public class GoodsServiceImpl implements IGoodsService {
     }
 
     @Override
+    @Transactional
     public void delete(Long[] ids) {
         Lists.newArrayList(ids).stream().forEach(id -> tbGoodsMapper.deleteByPrimaryKey(id));
     }

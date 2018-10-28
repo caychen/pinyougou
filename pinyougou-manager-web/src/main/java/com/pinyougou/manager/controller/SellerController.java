@@ -1,7 +1,8 @@
-package com.pinyougou.shop.controller;
+package com.pinyougou.manager.controller;
 
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.pinyougou.StatusEnum;
 import com.pinyougou.entity.TbSeller;
 import com.pinyougou.page.PageResult;
 import com.pinyougou.result.JsonResult;
@@ -116,6 +117,19 @@ public class SellerController {
             log.error("删除失败：{}", e.getMessage());
             e.printStackTrace();
             return JsonResult.fail("删除失败");
+        }
+    }
+
+    @PutMapping("/status/{sellerId}")
+    public JsonResult updateStatus(@PathVariable String sellerId, String status) {
+        log.info("审核{}，修改状态为{}", sellerId, StatusEnum.getDescByCode(status).getDesc());
+        try {
+            sellerService.updateStatus(sellerId, status);
+            return JsonResult.ok();
+        } catch (Exception e) {
+            log.error("修改状态失败：{}", e.getMessage());
+            e.printStackTrace();
+            return JsonResult.fail();
         }
     }
 }

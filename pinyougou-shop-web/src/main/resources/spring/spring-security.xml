@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+             http://www.springframework.org/schema/beans/spring-beans.xsd
+             http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 静态文件 -->
+    <http pattern="/css/**" security="none"></http>
+    <http pattern="/img/**" security="none"></http>
+    <http pattern="/js/**" security="none"></http>
+    <http pattern="/plugins/**" security="none"></http>
+
+    <!-- 商家入驻保存 -->
+    <http pattern="/seller/" security="none"></http>
+
+    <!-- 设置页面不登陆也可以访问 -->
+    <http pattern="/*.html" security="none"></http>
+
+    <!-- 页面的拦截规则    use-expressions:是否启动SPEL表达式 默认是true -->
+    <http use-expressions="false">
+        <intercept-url pattern="/**" access="ROLE_SELLER"/>
+
+        <form-login login-page="/shoplogin.html" default-target-url="/admin/index.html" authentication-failure-url="/shoplogin.html" always-use-default-target="true"/>
+
+        <csrf disabled="true"/>
+
+        <headers>
+            <!-- 允许内嵌框架页 -->
+            <frame-options policy="SAMEORIGIN"/>
+        </headers>
+
+        <logout />
+
+    </http>
+
+    <beans:bean id="userDetailsService" class="com.pinyougou.shop.service.UserDetailsServiceImpl">
+        <beans:property name="sellerService" ref="sellerService"></beans:property>
+    </beans:bean>
+
+    <beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></beans:bean>
+
+    <dubbo:reference interface="com.pinyougou.sellergoods.service.ISellerService" id="sellerService"></dubbo:reference>
+
+    <authentication-manager>
+        <authentication-provider user-service-ref="userDetailsService">
+            <!-- 使用指定的加密算法对登录时的密码进行加密验证 -->
+            <password-encoder ref="passwordEncoder"></password-encoder>
+        </authentication-provider>
+    </authentication-manager>
+
+</beans:beans>

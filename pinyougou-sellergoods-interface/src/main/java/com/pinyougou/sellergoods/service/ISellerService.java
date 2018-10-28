@@ -24,4 +24,6 @@ public interface ISellerService {
     TbSeller findOne(String id);
 
     void delete(String[] ids);
+
+    void updateStatus(String sellerId, String status);
 }
