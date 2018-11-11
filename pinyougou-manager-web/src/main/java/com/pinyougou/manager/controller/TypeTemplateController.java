@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
 /**
  * controller
  * @author Administrator
@@ -95,6 +97,7 @@ public class TypeTemplateController {
 		log.info("查找Id为{}的模板数据！", id);
 		return typeTemplateService.findOne(id);
 	}
+
 	/**
 	 * 批量删除
 	 * @param ids
@@ -112,6 +115,11 @@ public class TypeTemplateController {
 			e.printStackTrace();
 			return JsonResult.fail("删除失败");
 		}
+	}
+
+	@GetMapping("/options")
+	public List<Map> selectTypeTemplateOptionList(){
+		return typeTemplateService.selectTypeTemplateOptionList();
 	}
 	
 }

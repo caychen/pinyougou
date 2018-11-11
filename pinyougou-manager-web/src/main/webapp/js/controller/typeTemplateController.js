@@ -1,5 +1,5 @@
 //控制层
-app.controller('typeTemplateController', function ($scope, $controller, typeTemplateService, brandService, specificationService) {
+app.controller('typeTemplateController', ['$scope', '$controller', 'typeTemplateService', 'brandService', 'specificationService', function ($scope, $controller, typeTemplateService, brandService, specificationService) {
 
     $controller('baseController', {
         $scope: $scope
@@ -129,4 +129,4 @@ app.controller('typeTemplateController', function ($scope, $controller, typeTemp
         $scope.entity.customAttributeItems.splice(index, 1);
     };
 
-});	
+}]);

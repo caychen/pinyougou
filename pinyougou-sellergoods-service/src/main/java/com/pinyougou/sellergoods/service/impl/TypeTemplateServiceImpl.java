@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 服务实现层
@@ -106,6 +107,11 @@ public class TypeTemplateServiceImpl implements ITypeTemplateService {
     @Transactional
     public void delete(Long[] ids) {
         Lists.newArrayList(ids).forEach(id -> typeTemplateMapper.deleteByPrimaryKey(id));
+    }
+
+    @Override
+    public List<Map> selectTypeTemplateOptionList() {
+        return typeTemplateMapper.selectTypeTemplateOptionList();
     }
 
 }

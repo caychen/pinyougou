@@ -12,11 +12,27 @@
     <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="../css/style.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-    
+
+	<!-- 解决BootStrap的模态框失效问题 -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.0/angular.min.js"></script>
+	<script type="text/javascript" src="../plugins/bootstrap/js/bootstrap.js"></script>
+
+	<!-- 分页组件 -->
+	<script type="text/javascript" src="../plugins/angularjs/pagination.js"></script>
+	<link rel="stylesheet" href="../plugins/angularjs/pagination.css">
+
+	<!-- sweetalert -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+	<!-- select2 -->
+	<link rel="stylesheet" href="../plugins/select2/select2.css" />
+	<link rel="stylesheet" href="../plugins/select2/select2-bootstrap.css" />
+	<script src="../plugins/select2/select2.min.js" type="text/javascript"></script>
+
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" >
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="itemCatController" ng-init="findByParentId(0)">
   <!-- .box-body -->
                 
                     <div class="box-header with-border">
@@ -27,13 +43,13 @@
                     <div class="box-body">
                   			 <ol class="breadcrumb">	                        	
                         		<li>
-		                        	<a href="#" >顶级分类列表</a> 
+		                        	<a href="#" ng-click="setGrade(1);selectList({id:0})">顶级分类列表</a>
 		                        </li>
-		                        <li>
-		                       		<a href="#" >珠宝</a>
+		                        <li ng-if="itemCat_1.id">
+		                       		<a href="#" ng-click="setGrade(2);selectList(itemCat_1)"><span ng-bind="itemCat_1.name"></span></a>
 		                        </li>
-		                        <li>
-		                        	<a href="#" >银饰</a>
+		                        <li ng-if="itemCat_2.id">
+									<a href="#" ng-click="setGrade(3);selectList(itemCat_2)"><span ng-bind="itemCat_2.name"></span></a>
 		                        </li>
 	                        </ol>
 
@@ -68,40 +84,16 @@
 			                          </tr>
 			                      </thead>
 			                      <tbody>
-			                          <tr >
+			                          <tr ng-repeat="itemCat in itemCats">
 			                              <td><input  type="checkbox" ></td>			                              
-				                          <td>982</td>
-									      <td>吊坠/项链</td>									    
+				                          <td><span ng-bind="itemCat.id"></span></td>
+									      <td><span ng-bind="itemCat.name"></span></td>
 									      <td>
-									      	11    
+											  <span ng-bind="itemCat.typeId"></span>
 									      </td>									      
 		                                  <td class="text-center">		                                     
-		                                      <button type="button" class="btn bg-olive btn-xs" >查询下级</button> 		                                     
-		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" >修改</button>                                           
-		                                  </td>
-			                          </tr>
-									  <tr >
-			                              <td><input  type="checkbox"> </td>			                              
-				                          <td>983</td>
-									      <td>手镯/手链/脚链</td>									    
-									      <td>
-									      	11    
-									      </td>									      
-		                                  <td class="text-center">		                                     
-		                                      <button type="button" class="btn bg-olive btn-xs" >查询下级</button> 		                                     
-		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" >修改</button>                                           
-		                                  </td>
-			                          </tr>
-									  <tr >
-			                              <td><input  type="checkbox" ></td>			                              
-				                          <td>984</td>
-									      <td>戒指/耳饰</td>									    
-									      <td>
-									      	11    
-									      </td>									      
-		                                  <td class="text-center">		                                     
-		                                      <button type="button" class="btn bg-olive btn-xs" >查询下级</button> 		                                     
-		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" >修改</button>                                           
+		                                      <button type="button" class="btn bg-olive btn-xs" ng-if="grade != 3" ng-click="setGrade(grade + 1);selectList(itemCat)">查询下级</button>
+		                                 	  <button type="button" class="btn bg-olive btn-xs" data-toggle="modal" data-target="#editModal" ng-click="findOne(itemCat.id);">修改</button>
 		                                  </td>
 			                          </tr>
 			                      </tbody>
@@ -119,7 +111,7 @@
               
                                 
 <!-- 编辑窗口 -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-init="findTypeTemplateList();">
   <div class="modal-dialog" >
 	<div class="modal-content">
 		<div class="modal-header">
@@ -137,23 +129,32 @@
 		      	</tr>
 		      	<tr>
 		      		<td>商品分类名称</td>
-		      		<td><input  class="form-control" placeholder="商品分类名称">  </td>
+		      		<td><input  class="form-control" placeholder="商品分类名称" ng-model="entity.name">  </td>
 		      	</tr>			  
 		      	<tr>
 		      		<td>类型模板</td>
 		      		<td>	      		
-		      			<input select2 config="options['type_template']" placeholder="商品类型模板" class="form-control" type="text"/>
+		      			<input select2 config="typeTemplateList" select2-model="entity.typeId" placeholder="商品类型模板" class="form-control" type="text"/>
 		      		</td>		      		      		
 		      	</tr>		      	
 			 </table>				
 			
 		</div>
 		<div class="modal-footer">						
-			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
+			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true" ng-click="save();">保存</button>
 			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 		</div>
 	  </div>
 	</div>
 </div>
+
+  <script type="text/javascript" src="../js/base_pagination.js"></script>
+  <script src="../plugins/select2/angular-select2.js" type="text/javascript"></script>
+
+  <script type="text/javascript" src="../js/service/itemCatService.js"></script>
+  <script type="text/javascript" src="../js/service/typeTemplateService.js"></script>
+  <script type="text/javascript" src="../js/controller/baseController.js"></script>
+  <script type="text/javascript" src="../js/controller/itemCatController.js"></script>
+
 </body>
 </html>

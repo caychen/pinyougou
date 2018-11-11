@@ -4,6 +4,7 @@ import com.pinyougou.entity.TbTypeTemplate;
 import com.pinyougou.page.PageResult;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 服务层接口
@@ -57,4 +58,5 @@ public interface ITypeTemplateService {
     void delete(Long[] ids);
 
 
+    List<Map> selectTypeTemplateOptionList();
 }
