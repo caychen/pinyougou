@@ -32,7 +32,7 @@
 
 </head>
 
-<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="itemCatController" ng-init="findByParentId(0)">
+<body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="itemCatController" ng-init="findByParentId(0);">
   <!-- .box-body -->
                 
                     <div class="box-header with-border">
@@ -61,8 +61,8 @@
                                 <div class="form-group form-inline">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default" title="新建" data-toggle="modal" data-target="#editModal" ><i class="fa fa-file-o"></i> 新建</button>
-                                        <button type="button" class="btn btn-default" title="删除" ><i class="fa fa-trash-o"></i> 删除</button>
-                                        <button type="button" class="btn btn-default" title="刷新" ><i class="fa fa-check"></i> 刷新</button>
+                                        <button type="button" class="btn btn-default" title="删除" ng-click="del();"><i class="fa fa-trash-o"></i> 删除</button>
+                                        <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-check"></i> 刷新</button>
                                        
                                     </div>
                                 </div>
@@ -85,7 +85,7 @@
 			                      </thead>
 			                      <tbody>
 			                          <tr ng-repeat="itemCat in itemCats">
-			                              <td><input  type="checkbox" ></td>			                              
+			                              <td><input type="checkbox"  ng-click="updateSelection($event, itemCat.id)"></td>
 				                          <td><span ng-bind="itemCat.id"></span></td>
 									      <td><span ng-bind="itemCat.name"></span></td>
 									      <td>
@@ -124,7 +124,13 @@
 				<tr>
 		      		<td>上级商品分类</td>
 		      		<td>
-		      		   珠宝 >>  银饰
+		      		   顶级
+                        <span ng-if="itemCat_1.id">
+                            >>  {{itemCat_1.name}}
+                        </span>
+                        <span ng-if="itemCat_2.id">
+                            >>  {{itemCat_2.name}}
+                        </span>
 		      		</td>
 		      	</tr>
 		      	<tr>
@@ -134,7 +140,8 @@
 		      	<tr>
 		      		<td>类型模板</td>
 		      		<td>	      		
-		      			<input select2 config="typeTemplateList" select2-model="entity.typeId" placeholder="商品类型模板" class="form-control" type="text"/>
+						<select class="form-control" ng-model="entity.typeId" ng-options="typeTemplate.id as typeTemplate.name for typeTemplate in typeTemplateList">
+						</select>
 		      		</td>		      		      		
 		      	</tr>		      	
 			 </table>				

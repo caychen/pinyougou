@@ -210,7 +210,7 @@
   </update>
 
     <select id="selectTypeTemplateOptionList" resultType="java.util.Map">
-      SELECT id, name text
+      SELECT id, name
       FROM tb_type_template
     </select>
 </mapper>

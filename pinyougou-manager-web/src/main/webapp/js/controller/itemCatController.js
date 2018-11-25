@@ -5,6 +5,9 @@ app.controller('itemCatController', ['$scope', '$controller', 'itemCatService', 
         $scope: $scope
     });//继承
 
+    //当前页的父id
+    $scope.currentParentId = 0;
+
     //读取列表数据绑定到表单中  
     $scope.findAll = function () {
         itemCatService.findAll().then(function (response) {
@@ -17,7 +20,7 @@ app.controller('itemCatController', ['$scope', '$controller', 'itemCatService', 
 
     $scope.itemCat = {};
     //分页
-    $scope.findPage = function (page, size) {
+    $scope.search = function (page, size) {
         itemCatService.search($scope.itemCat, page, size).then(function (response) {
                 $scope.itemCats = response.data.rows;
                 $scope.paginationConf.totalItems = response.data.total;//更新总记录数
@@ -38,10 +41,11 @@ app.controller('itemCatController', ['$scope', '$controller', 'itemCatService', 
 
     //保存
     $scope.save = function () {
+        $scope.entity.parentId = $scope.currentParentId;
         itemCatService.save($scope.entity).then(function (response) {
             if (response.data.success) {
                 swal("分类保存成功!", "", "success");
-                $scope.reload();
+                $scope.findByParentId($scope.currentParentId);
             } else {
                 swal("分类保存失败!", "", "error");
             }
@@ -74,7 +78,7 @@ app.controller('itemCatController', ['$scope', '$controller', 'itemCatService', 
                             confirmButtonText: "确认",
                         }, function (isConfirm) {
                             if (isConfirm) {
-                                $scope.reload();
+                                $scope.findByParentId($scope.currentParentId);
                                 $scope.selectIds = [];
                             }
                         });
@@ -95,6 +99,8 @@ app.controller('itemCatController', ['$scope', '$controller', 'itemCatService', 
     //根据上级分类ID查询列表
     $scope.findByParentId = function (parentId) {
         itemCatService.findByParentId(parentId).then(function (response) {
+                //保存当前父id
+                $scope.currentParentId = parentId;
                 $scope.itemCats = response.data;
             }, function (reason) {
                 swal("网络异常，请稍后重试!", "", "error");
@@ -128,13 +134,14 @@ app.controller('itemCatController', ['$scope', '$controller', 'itemCatService', 
 
     };
 
-    $scope.typeTemplateList = {data: []};//类型模版列表
+    $scope.typeTemplateList = {};//类型模版列表
     $scope.findTypeTemplateList = function () {
         typeTemplateService.findTypeTemplateList().then(function (response) {
-            $scope.typeTemplateList.data = response.data;
+            $scope.typeTemplateList = response.data;
         }, function (reason) {
             swal("网络异常，请稍后重试!", "", "error");
         });
     };
+    
 
 }]);
