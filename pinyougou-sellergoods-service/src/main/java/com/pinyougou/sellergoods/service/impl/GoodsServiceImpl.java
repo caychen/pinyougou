@@ -6,6 +6,8 @@ import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.pinyougou.entity.TbGoods;
 import com.pinyougou.entity.TbGoodsExample;
+import com.pinyougou.group.GoodsGroup;
+import com.pinyougou.mapper.TbGoodsDescMapper;
 import com.pinyougou.mapper.TbGoodsMapper;
 import com.pinyougou.page.PageResult;
 import com.pinyougou.sellergoods.service.IGoodsService;
@@ -28,6 +30,9 @@ public class GoodsServiceImpl implements IGoodsService {
 
     @Autowired
     private TbGoodsMapper tbGoodsMapper;
+
+    @Autowired
+    private TbGoodsDescMapper tbGoodsDescMapper;
 
     @Override
     public List<TbGoods> findAll() {
@@ -75,8 +80,13 @@ public class GoodsServiceImpl implements IGoodsService {
 
     @Override
     @Transactional
-    public void add(TbGoods goods) {
-        tbGoodsMapper.insert(goods);
+    public void add(GoodsGroup goodsGroup) {
+        goodsGroup.getGoods().setAuditStatus("0");//状态，未审核
+        tbGoodsMapper.insert(goodsGroup.getGoods());
+
+        //获取goods的id
+        goodsGroup.getGoodsDesc().setGoodsId(goodsGroup.getGoods().getId());
+        tbGoodsDescMapper.insert(goodsGroup.getGoodsDesc());
     }
 
     @Override

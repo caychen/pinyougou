@@ -36,11 +36,14 @@ app.controller('goodsController', ['$scope', '$controller', 'goodsService', func
 
     //保存
     $scope.save = function () {
+        //从富文本编辑器中获取html内容
+        $scope.entity.goodsDesc.introduction = editor.html();
 
         goodsService.save($scope.entity).then(function (response) {
             if (response.data.success) {
                 swal("商品保存成功!", "", "success");
-                $scope.reload();
+                $scope.entity = {};
+                editor.html('');//清空富文本编辑器内容
             } else {
                 swal("商品保存失败!", "", "error");
             }

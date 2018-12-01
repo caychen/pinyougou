@@ -2,10 +2,12 @@ package com.pinyougou.shop.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.entity.TbGoods;
+import com.pinyougou.group.GoodsGroup;
 import com.pinyougou.page.PageResult;
 import com.pinyougou.result.JsonResult;
 import com.pinyougou.sellergoods.service.IGoodsService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -47,14 +49,20 @@ public class GoodsController {
     /**
      * 增加
      *
-     * @param goods
+     * @param goodsGroup
      * @return
      */
     @PostMapping("/")
-    public JsonResult add(@RequestBody TbGoods goods) {
+    public JsonResult add(@RequestBody GoodsGroup goodsGroup) {
         log.info("添加商品数据...");
         try {
-            goodsService.add(goods);
+            //获取商家id
+            String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
+
+            //设置商家id
+            goodsGroup.getGoods().setSellerId(sellerId);
+
+            goodsService.add(goodsGroup);
             log.info("添加成功...");
             return JsonResult.ok("添加成功");
         } catch (Exception e) {

@@ -1,6 +1,7 @@
 package com.pinyougou.sellergoods.service;
 
 import com.pinyougou.entity.TbGoods;
+import com.pinyougou.group.GoodsGroup;
 import com.pinyougou.page.PageResult;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface IGoodsService {
 
     PageResult search(TbGoods goods, int page, int size);
 
-    void add(TbGoods goods);
+    void add(GoodsGroup goodsGroup);
 
     void update(TbGoods goods);
 

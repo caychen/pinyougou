@@ -142,6 +142,6 @@ app.controller('itemCatController', ['$scope', '$controller', 'itemCatService', 
             swal("网络异常，请稍后重试!", "", "error");
         });
     };
-    
+
 
 }]);
