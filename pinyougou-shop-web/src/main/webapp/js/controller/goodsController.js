@@ -1,5 +1,5 @@
 //控制层
-app.controller('goodsController', ['$scope', '$controller', 'goodsService', function ($scope, $controller, goodsService) {
+app.controller('goodsController', ['$scope', '$controller', 'goodsService','uploadService' , function ($scope, $controller, goodsService, uploadService) {
 
     $controller('baseController', {
         $scope: $scope
@@ -92,5 +92,16 @@ app.controller('goodsController', ['$scope', '$controller', 'goodsService', func
             swal("请至少选择一项!", "", "warning");
         }
     };
+
+    $scope.imageEntity = {};
+    $scope.uploadFile = function(){
+        uploadService.uploadFile().then(function(response){
+            if(response.data.success){
+                $scope.imageEntity.url = response.data.data;
+            }
+        }, function (reason) {
+            swal("网络异常，请稍后重试!", "", "error");
+        })
+    }
 
 }]);

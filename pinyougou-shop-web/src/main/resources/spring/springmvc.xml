@@ -10,7 +10,7 @@
     <context:component-scan base-package="com.pinyougou.shop.controller"/>
 
     <mvc:annotation-driven>
-        <mvc:message-converters register-defaults="true">
+        <mvc:message-converters>
             <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
                 <property name="supportedMediaTypes" value="application/json"/>
                 <property name="features">
@@ -22,6 +22,13 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
+
+    <!-- 文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"/>
+        <!-- 最大上传的大小：10MB=10*1024*1024 -->
+        <property name="maxUploadSize" value="10485760"/>
+    </bean>
 
     <dubbo:application name="pinyougou-shop-web"/>
     <dubbo:registry address="${zookeeper.address}"/>
