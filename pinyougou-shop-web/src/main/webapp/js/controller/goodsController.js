@@ -102,6 +102,19 @@ app.controller('goodsController', ['$scope', '$controller', 'goodsService','uplo
         }, function (reason) {
             swal("网络异常，请稍后重试!", "", "error");
         })
-    }
+    };
+
+    $scope.entity = {goodsDesc: {itemImages: []}};
+    //将当前上传的图片实体存入图片列表
+    $scope.add_image_entity = function(){
+        $scope.entity.goodsDesc.itemImages.push($scope.imageEntity);
+
+        $scope.imageEntity = {};
+    };
+
+    //移除图片
+    $scope.remove_image_entity = function(index){
+        $scope.entity.goodsDesc.itemImages.splice(index, 1);
+    };
 
 }]);
