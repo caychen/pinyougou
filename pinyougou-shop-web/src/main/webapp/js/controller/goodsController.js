@@ -1,5 +1,5 @@
 //控制层
-app.controller('goodsController', ['$scope', '$controller', 'goodsService','uploadService' , function ($scope, $controller, goodsService, uploadService) {
+app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'uploadService', 'itemCatService', function ($scope, $controller, goodsService, uploadService, itemCatService) {
 
     $controller('baseController', {
         $scope: $scope
@@ -104,17 +104,57 @@ app.controller('goodsController', ['$scope', '$controller', 'goodsService','uplo
         })
     };
 
-    $scope.entity = {goodsDesc: {itemImages: []}};
+    $scope.entity = {goods:{category2Id: undefined, category3Id: undefined}, goodsDesc: {itemImages: []}};
     //将当前上传的图片实体存入图片列表
     $scope.add_image_entity = function(){
-        $scope.entity.goodsDesc.itemImages.push($scope.imageEntity);
+        if(($scope.imageEntity.color !== '' && typeof $scope.imageEntity.color !== 'undefined') && $scope.imageEntity.url !== ''){
+            $scope.entity.goodsDesc.itemImages.push($scope.imageEntity);
 
-        $scope.imageEntity = {};
+            $scope.imageEntity = {};
+        }else{
+            swal("请补充完整！", "", "warning");
+            return ;
+        }
     };
 
     //移除图片
     $scope.remove_image_entity = function(index){
         $scope.entity.goodsDesc.itemImages.splice(index, 1);
     };
+
+    /*
+    subIndex：表示分类级别，1为一级分类，以此类推
+    parentId：表示父id
+     */
+    $scope.selectItemCatList = function(subIndex, parentId){
+        itemCatService.findByParentId(parentId).then(function(response){
+            if(subIndex == 1){
+                $scope.itemCatList1 = response.data;
+            }else if (subIndex == 2){
+                $scope.itemCatList2 = response.data;
+            }else if(subIndex == 3){
+                $scope.itemCatList3 = response.data;
+            }
+        }, function (reason) {
+            swal("网络异常，请稍后重试!", "", "error");
+        })
+    };
+
+    /*
+    监控
+     */
+    $scope.$watch('entity.goods.category1Id', function(newValue, oldValue){
+        $scope.entity.goods.category2Id = undefined;
+        $scope.entity.goods.category3Id = undefined;
+        if(typeof newValue !== 'undefined' && newValue != null){
+            $scope.selectItemCatList(2, newValue);
+        }
+    });
+
+    $scope.$watch('entity.goods.category2Id', function(newValue, oldValue){
+        if(typeof newValue !== 'undefined' && newValue != null){
+            $scope.selectItemCatList(3, newValue);
+        }
+    });
 
 }]);
