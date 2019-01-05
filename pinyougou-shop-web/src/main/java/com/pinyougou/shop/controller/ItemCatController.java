@@ -2,6 +2,7 @@ package com.pinyougou.shop.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.entity.TbItemCat;
+import com.pinyougou.enums.MsgEnum;
 import com.pinyougou.page.PageResult;
 import com.pinyougou.result.JsonResult;
 import com.pinyougou.sellergoods.service.IItemCatService;
@@ -45,7 +46,7 @@ public class ItemCatController {
     public PageResult findPage(@RequestBody TbItemCat itemCat,
                                @RequestParam(defaultValue = "1", required = false) int page,
                                @RequestParam(defaultValue = "10", required = false) int size) {
-        log.info("分页请求分类数据...");
+        log.info("分页请求分类数据：itemCat=[{}], page=[{}], size=[{}]", itemCat, page, size);
         return itemCatService.search(itemCat, page, size);
     }
 
@@ -57,15 +58,14 @@ public class ItemCatController {
      */
     @PostMapping("/")
     public JsonResult add(@RequestBody TbItemCat itemCat) {
-        log.info("添加分类数据...");
+        log.info("添加分类数据：itemCat=[{}]", itemCat);
         try {
             itemCatService.add(itemCat);
-            log.info("添加成功...");
-            return JsonResult.ok("添加成功");
+            return JsonResult.ok();
         } catch (Exception e) {
-            log.error("添加失败：{}", e.getMessage());
+            log.error("添加失败原因：[{}]", e.getMessage());
             e.printStackTrace();
-            return JsonResult.fail("添加失败");
+            return JsonResult.fail(MsgEnum.ADD_FAILED.getMsg());
         }
     }
 
@@ -77,16 +77,15 @@ public class ItemCatController {
      */
     @PutMapping("/{id}")
     public JsonResult update(@PathVariable Long id, @RequestBody TbItemCat itemCat) {
-        log.info("修改分类数据...");
         try {
             itemCat.setId(id);
+            log.info("修改分类数据：itemCat=[{}]", itemCat);
             itemCatService.update(itemCat);
-            log.info("修改成功...");
-            return JsonResult.ok("修改成功");
+            return JsonResult.ok();
         } catch (Exception e) {
-            log.error("修改失败：{}", e.getMessage());
+            log.error("修改失败原因：[{}]", e.getMessage());
             e.printStackTrace();
-            return JsonResult.fail("修改失败");
+            return JsonResult.fail(MsgEnum.UPDATE_FAILED.getMsg());
         }
     }
 
@@ -98,8 +97,10 @@ public class ItemCatController {
      */
     @GetMapping("/{id}")
     public TbItemCat findOne(@PathVariable Long id) {
-        log.info("查找Id为{}的品牌数据！", id);
-        return itemCatService.findOne(id);
+        log.info("查找Id为[{}]的分类数据！", id);
+        TbItemCat one = itemCatService.findOne(id);
+        log.info("查询到的分类数据为：[{}]", one);
+        return one;
     }
 
     /**
@@ -110,15 +111,14 @@ public class ItemCatController {
      */
     @DeleteMapping("/")
     public JsonResult delete(@RequestBody Long[] ids) {
-        log.info("删除品牌数据：{}", Arrays.asList(ids));
+        log.info("删除分类数据：ids=[{}]", Arrays.asList(ids));
         try {
             itemCatService.delete(ids);
-            log.info("删除成功...");
-            return JsonResult.ok("删除成功");
+            return JsonResult.ok();
         } catch (Exception e) {
-            log.error("删除失败：{}", e.getMessage());
+            log.error("删除失败原因：[{}]", e.getMessage());
             e.printStackTrace();
-            return JsonResult.fail("删除失败");
+            return JsonResult.fail(MsgEnum.DELETE_FAILED.getMsg());
         }
     }
 

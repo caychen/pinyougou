@@ -2,6 +2,7 @@ package com.pinyougou.shop.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.pinyougou.entity.TbGoods;
+import com.pinyougou.enums.MsgEnum;
 import com.pinyougou.group.GoodsGroup;
 import com.pinyougou.page.PageResult;
 import com.pinyougou.result.JsonResult;
@@ -42,7 +43,7 @@ public class GoodsController {
     public PageResult findPage(@RequestBody TbGoods goods,
                                @RequestParam(defaultValue = "1", required = false) int page,
                                @RequestParam(defaultValue = "10", required = false) int size) {
-        log.info("分页请求商品数据...");
+        log.info("分页请求商品数据：goods=[{}], page=[{}], size=[{}]", goods, page, size);
         return goodsService.search(goods, page, size);
     }
 
@@ -54,7 +55,7 @@ public class GoodsController {
      */
     @PostMapping("/")
     public JsonResult add(@RequestBody GoodsGroup goodsGroup) {
-        log.info("添加商品数据...");
+        log.info("添加商品数据：goodsGroup=[{}]", goodsGroup);
         try {
             //获取商家id
             String sellerId = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -63,12 +64,11 @@ public class GoodsController {
             goodsGroup.getGoods().setSellerId(sellerId);
 
             goodsService.add(goodsGroup);
-            log.info("添加成功...");
-            return JsonResult.ok("添加成功");
+            return JsonResult.ok();
         } catch (Exception e) {
-            log.error("添加失败：{}", e.getMessage());
+            log.error("添加失败原因：[{}]", e.getMessage());
             e.printStackTrace();
-            return JsonResult.fail("添加失败");
+            return JsonResult.fail(MsgEnum.ADD_FAILED.getMsg());
         }
     }
 
@@ -80,16 +80,15 @@ public class GoodsController {
      */
     @PutMapping("/{id}")
     public JsonResult update(@PathVariable Long id, @RequestBody TbGoods goods) {
-        log.info("修改品牌数据...");
         try {
             goods.setId(id);
+            log.info("修改商品数据：goods=[{}]", goods);
             goodsService.update(goods);
-            log.info("修改成功...");
-            return JsonResult.ok("修改成功");
+            return JsonResult.ok();
         } catch (Exception e) {
-            log.error("修改失败：{}", e.getMessage());
+            log.error("修改失败原因：[{}]", e.getMessage());
             e.printStackTrace();
-            return JsonResult.fail("修改失败");
+            return JsonResult.fail(MsgEnum.UPDATE_FAILED.getMsg());
         }
     }
 
@@ -101,8 +100,10 @@ public class GoodsController {
      */
     @GetMapping("/{id}")
     public TbGoods findOne(@PathVariable Long id) {
-        log.info("查找Id为{}的品牌数据！", id);
-        return goodsService.findOne(id);
+        log.info("查找Id为[{}]的商品数据！", id);
+        TbGoods one = goodsService.findOne(id);
+        log.info("查询到的商品数据为：[{}]", one);
+        return one;
     }
 
     /**
@@ -113,15 +114,14 @@ public class GoodsController {
      */
     @DeleteMapping("/")
     public JsonResult delete(@RequestBody Long[] ids) {
-        log.info("删除品牌数据：{}", Arrays.asList(ids));
+        log.info("删除商品数据：ids=[{}]", Arrays.asList(ids));
         try {
             goodsService.delete(ids);
-            log.info("删除成功...");
-            return JsonResult.ok("删除成功");
+            return JsonResult.ok();
         } catch (Exception e) {
-            log.error("删除失败：{}", e.getMessage());
+            log.error("删除失败原因：[{}]", e.getMessage());
             e.printStackTrace();
-            return JsonResult.fail("删除失败");
+            return JsonResult.fail(MsgEnum.DELETE_FAILED.getMsg());
         }
     }
 

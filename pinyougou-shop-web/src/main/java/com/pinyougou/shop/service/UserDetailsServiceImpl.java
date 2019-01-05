@@ -1,7 +1,7 @@
 package com.pinyougou.shop.service;
 
 import com.google.common.collect.Lists;
-import com.pinyougou.StatusEnum;
+import com.pinyougou.enums.StatusEnum;
 import com.pinyougou.entity.TbSeller;
 import com.pinyougou.sellergoods.service.ISellerService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,13 +31,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("开始认证: {}", username);
+        log.info("开始认证: [{}]", username);
 
         //构建角色列表
         List<GrantedAuthority> grantedAuthorityList = Lists.newArrayList();
         grantedAuthorityList.add(new SimpleGrantedAuthority("ROLE_SELLER"));
 
         TbSeller tbSeller = sellerService.findOne(username);
+        log.info("查询到商家数据：[{}]", tbSeller);
         if (tbSeller != null) {
             if (StatusEnum.SUCCESS.getCode().equals(tbSeller.getStatus())) {
                 return new User(username, tbSeller.getPassword(), grantedAuthorityList);

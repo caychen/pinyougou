@@ -11,6 +11,7 @@ import com.pinyougou.mapper.TbGoodsDescMapper;
 import com.pinyougou.mapper.TbGoodsMapper;
 import com.pinyougou.page.PageResult;
 import com.pinyougou.sellergoods.service.IGoodsService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,7 @@ import java.util.List;
  */
 @Service
 @Component("goodsService")
+@Slf4j
 public class GoodsServiceImpl implements IGoodsService {
 
     @Autowired
@@ -74,7 +76,7 @@ public class GoodsServiceImpl implements IGoodsService {
 
         }
         Page<TbGoods> page = (Page<TbGoods>) tbGoodsMapper.selectByExample(example);
-
+        log.info("search方法查询到[{}]条记录", page.getTotal());
         return new PageResult(page.getTotal(), page.getResult());
     }
 

@@ -81,7 +81,7 @@
 		                           	  				<select style="width: 200px;" class="form-control select-sm" ng-model="entity.goods.category3Id" ng-options="itemCat.id as itemCat.name for itemCat in itemCatList3"></select>
 		                              			</td>
 		                              			<td>
-		                           	  				模板ID:19
+		                           	  				模板ID: <span ng-bind="entity.goods.typeTemplateId"></span>
 		                              			</td>
 		                           	  		</tr>
 		                           	  	</table>
@@ -404,6 +404,7 @@
 			<script type="text/javascript" src="../js/service/goodsService.js"></script>
 			<script type="text/javascript" src="../js/service/uploadService.js"></script>
 			<script type="text/javascript" src="../js/service/itemCatService.js"></script>
+			<script type="text/javascript" src="../js/service/typeTemplateService.js"></script>
 			<script type="text/javascript" src="../js/controller/baseController.js"></script>
 			<script type="text/javascript" src="../js/controller/goodsController.js"></script>
 

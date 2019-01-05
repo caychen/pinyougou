@@ -9,6 +9,7 @@ import com.pinyougou.entity.TbSellerExample;
 import com.pinyougou.mapper.TbSellerMapper;
 import com.pinyougou.page.PageResult;
 import com.pinyougou.sellergoods.service.ISellerService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,7 @@ import java.util.List;
 
 @Service
 @Component("sellerService")
+@Slf4j
 public class SellerServiceImpl implements ISellerService {
 
     @Autowired
@@ -115,6 +117,7 @@ public class SellerServiceImpl implements ISellerService {
         }
 
         Page<TbSeller> page = (Page<TbSeller>) tbSellerMapper.selectByExample(example);
+        log.info("search方法查询到[{}]条记录", page.getTotal());
         return new PageResult(page.getTotal(), page.getResult());
     }
 

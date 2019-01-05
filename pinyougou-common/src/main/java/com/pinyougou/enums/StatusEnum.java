@@ -1,10 +1,8 @@
-package com.pinyougou;
-
-import org.apache.commons.lang3.StringUtils;
+package com.pinyougou.enums;
 
 /**
  * Author:       Caychen
- * Enum:        com.pinyougou.StatusEnum
+ * Enum:        com.pinyougou.enums.StatusEnum
  * Date:         2018/10/28
  * Desc:
  */

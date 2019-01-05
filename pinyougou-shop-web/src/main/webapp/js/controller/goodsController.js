@@ -1,5 +1,5 @@
 //控制层
-app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'uploadService', 'itemCatService', function ($scope, $controller, goodsService, uploadService, itemCatService) {
+app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'uploadService', 'itemCatService', 'typeTemplateService', function ($scope, $controller, goodsService, uploadService, itemCatService, typeTemplateService) {
 
     $controller('baseController', {
         $scope: $scope
@@ -140,12 +140,11 @@ app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'upl
         })
     };
 
-    /*
-    监控
-     */
+    //监控
     $scope.$watch('entity.goods.category1Id', function(newValue, oldValue){
         $scope.entity.goods.category2Id = undefined;
         $scope.entity.goods.category3Id = undefined;
+        $scope.entity.goods.typeTemplateId = undefined;
         if(typeof newValue !== 'undefined' && newValue != null){
             $scope.selectItemCatList(2, newValue);
         }
@@ -154,6 +153,28 @@ app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'upl
     $scope.$watch('entity.goods.category2Id', function(newValue, oldValue){
         if(typeof newValue !== 'undefined' && newValue != null){
             $scope.selectItemCatList(3, newValue);
+        }
+    });
+
+    $scope.$watch('entity.goods.category3Id', function(newValue, oldValue){
+        if(typeof newValue !== 'undefined' && newValue != null) {
+            itemCatService.findOne(newValue).then(function (response) {
+                $scope.entity.goods.typeTemplateId = response.data.typeId;
+            }, function (reason) {
+
+            });
+        }
+    });
+
+    $scope.$watch('entity.goods.typeTemplateId', function(newValue, oldValue){
+        if(typeof newValue !== 'undefined' && newValue != null) {
+            typeTemplateService.findOne(newValue).then(function (response) {
+                $scope.typeTemplate = response.data;
+
+                $scope.typeTemplate.brandIds = JSON.parse($scope.typeTemplate.brandIds);
+            }, function (reason) {
+
+            });
         }
     });
 

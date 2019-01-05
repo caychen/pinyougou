@@ -1,17 +1,15 @@
 package com.pinyougou.sellergoods.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.alibaba.dubbo.container.page.PageHandler;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
-import com.pinyougou.entity.TbGoods;
 import com.pinyougou.entity.TbItemCat;
 import com.pinyougou.entity.TbItemCatExample;
-import com.pinyougou.mapper.TbGoodsMapper;
 import com.pinyougou.mapper.TbItemCatMapper;
 import com.pinyougou.page.PageResult;
 import com.pinyougou.sellergoods.service.IItemCatService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,6 +26,7 @@ import java.util.List;
 
 @Service
 @Component("itemCatService")
+@Slf4j
 public class ItemCatServiceImpl implements IItemCatService {
 
     @Autowired
@@ -52,6 +51,7 @@ public class ItemCatServiceImpl implements IItemCatService {
         }
 
         Page<TbItemCat> page = (Page<TbItemCat>) tbItemCatMapper.selectByExample(example);
+        log.info("search方法查询到[{}]条记录", page.getTotal());
         return new PageResult(page.getTotal(), page.getResult());
     }
 

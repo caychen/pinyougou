@@ -9,6 +9,7 @@ import com.pinyougou.entity.TbBrandExample;
 import com.pinyougou.mapper.TbBrandMapper;
 import com.pinyougou.page.PageResult;
 import com.pinyougou.sellergoods.service.IBrandService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 @Service
 @Component("brandService")
+@Slf4j
 public class BrandServiceImpl implements IBrandService {
 
     @Autowired
@@ -46,7 +48,7 @@ public class BrandServiceImpl implements IBrandService {
             }
         }
         Page<TbBrand> page = (Page<TbBrand>) tbBrandMapper.selectByExample(example);
-
+        log.info("search方法查询到[{}]条记录", page.getTotal());
         return new PageResult(page.getTotal(), page.getResult());
     }
 

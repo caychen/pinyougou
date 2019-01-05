@@ -13,6 +13,7 @@ import com.pinyougou.mapper.TbSpecificationMapper;
 import com.pinyougou.mapper.TbSpecificationOptionMapper;
 import com.pinyougou.page.PageResult;
 import com.pinyougou.sellergoods.service.ISpecificationService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,7 @@ import java.util.Map;
  */
 @Service
 @Component("specificationService")
+@Slf4j
 public class SpecificationServiceImpl implements ISpecificationService {
 
     @Autowired
@@ -61,6 +63,7 @@ public class SpecificationServiceImpl implements ISpecificationService {
         }
 
         Page<TbSpecification> page = (Page<TbSpecification>) specificationMapper.selectByExample(example);
+        log.info("search方法查询到[{}]条记录", page.getTotal());
         return new PageResult(page.getTotal(), page.getResult());
     }
 

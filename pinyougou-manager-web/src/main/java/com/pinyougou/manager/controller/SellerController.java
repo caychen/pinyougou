@@ -2,8 +2,9 @@ package com.pinyougou.manager.controller;
 
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.pinyougou.StatusEnum;
 import com.pinyougou.entity.TbSeller;
+import com.pinyougou.enums.MsgEnum;
+import com.pinyougou.enums.StatusEnum;
 import com.pinyougou.page.PageResult;
 import com.pinyougou.result.JsonResult;
 import com.pinyougou.sellergoods.service.ISellerService;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -41,7 +43,7 @@ public class SellerController {
     public PageResult findPage(@RequestBody TbSeller seller,
                                @RequestParam(defaultValue = "1", required = false) int page,
                                @RequestParam(defaultValue = "10", required = false) int size) {
-        log.info("分页请求商家数据...");
+        log.info("分页请求商家数据：seller=[{}], page=[{}], size=[{}]", seller, page, size);
         return sellerService.search(seller, page, size);
     }
 
@@ -53,6 +55,7 @@ public class SellerController {
      */
     @PostMapping("/")
     public JsonResult add(@RequestBody TbSeller seller) {
+        log.info("添加商家数据：seller=[{}]", seller);
         //密码加密
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String password = passwordEncoder.encode(seller.getPassword());//加密
@@ -60,12 +63,11 @@ public class SellerController {
 
         try {
             sellerService.add(seller);
-            log.info("添加成功...");
-            return JsonResult.ok("添加成功");
+            return JsonResult.ok();
         } catch (Exception e) {
-            log.error("添加失败：{}", e.getMessage());
+            log.error("添加失败原因：[{}]", e.getMessage());
             e.printStackTrace();
-            return JsonResult.fail("添加失败");
+            return JsonResult.fail(MsgEnum.ADD_FAILED.getMsg());
         }
     }
 
@@ -79,13 +81,13 @@ public class SellerController {
     public JsonResult update(@PathVariable String id, @RequestBody TbSeller seller) {
         try {
             seller.setSellerId(id);
+            log.info("修改商家数据：seller=[{}]", seller);
             sellerService.update(seller);
-            log.info("修改成功...");
-            return JsonResult.ok("修改成功");
+            return JsonResult.ok();
         } catch (Exception e) {
-            log.error("修改失败：{}", e.getMessage());
+            log.error("修改失败原因：[{}]", e.getMessage());
             e.printStackTrace();
-            return JsonResult.fail("修改失败");
+            return JsonResult.fail(MsgEnum.UPDATE_FAILED.getMsg());
         }
     }
 
@@ -97,8 +99,10 @@ public class SellerController {
      */
     @GetMapping("/{id}")
     public TbSeller findOne(@PathVariable String id) {
-        log.info("查找Id为{}的品牌数据！", id);
-        return sellerService.findOne(id);
+        log.info("查找Id为[{}]的商家数据！", id);
+        TbSeller one = sellerService.findOne(id);
+        log.info("查询到的商家数据为：[{}]", one);
+        return one;
     }
 
     /**
@@ -109,25 +113,25 @@ public class SellerController {
      */
     @DeleteMapping("/")
     public JsonResult delete(@RequestBody String[] ids) {
+        log.info("删除商家数据：ids=[{}]", Arrays.asList(ids));
         try {
             sellerService.delete(ids);
-            log.info("删除成功...");
-            return JsonResult.ok("删除成功");
+            return JsonResult.ok();
         } catch (Exception e) {
-            log.error("删除失败：{}", e.getMessage());
+            log.error("删除失败原因：[{}]", e.getMessage());
             e.printStackTrace();
-            return JsonResult.fail("删除失败");
+            return JsonResult.fail(MsgEnum.DELETE_FAILED.getMsg());
         }
     }
 
     @PutMapping("/status/{sellerId}")
     public JsonResult updateStatus(@PathVariable String sellerId, String status) {
-        log.info("审核{}，修改状态为{}", sellerId, StatusEnum.getDescByCode(status).getDesc());
+        log.info("商家审核id:[{}]，修改状态为:[{}]", sellerId, StatusEnum.getDescByCode(status).getDesc());
         try {
             sellerService.updateStatus(sellerId, status);
             return JsonResult.ok();
         } catch (Exception e) {
-            log.error("修改状态失败：{}", e.getMessage());
+            log.error("修改状态失败原因：[{}]", e.getMessage());
             e.printStackTrace();
             return JsonResult.fail();
         }

@@ -9,6 +9,7 @@ import com.pinyougou.entity.TbTypeTemplateExample;
 import com.pinyougou.mapper.TbTypeTemplateMapper;
 import com.pinyougou.page.PageResult;
 import com.pinyougou.sellergoods.service.ITypeTemplateService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ import java.util.Map;
  */
 @Service
 @Component("typeTemplateService")
+@Slf4j
 public class TypeTemplateServiceImpl implements ITypeTemplateService {
 
     @Autowired
@@ -67,6 +69,7 @@ public class TypeTemplateServiceImpl implements ITypeTemplateService {
         }
 
         Page<TbTypeTemplate> page = (Page<TbTypeTemplate>) typeTemplateMapper.selectByExample(example);
+        log.info("search方法查询到[{}]条记录", page.getTotal());
         return new PageResult(page.getTotal(), page.getResult());
     }
 

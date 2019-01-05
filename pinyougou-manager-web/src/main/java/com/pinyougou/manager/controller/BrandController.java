@@ -1,8 +1,8 @@
 package com.pinyougou.manager.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.alibaba.fastjson.JSONArray;
 import com.pinyougou.entity.TbBrand;
+import com.pinyougou.enums.MsgEnum;
 import com.pinyougou.page.PageResult;
 import com.pinyougou.result.JsonResult;
 import com.pinyougou.sellergoods.service.IBrandService;
@@ -31,61 +31,60 @@ public class BrandController {
     public PageResult findPage(@RequestBody TbBrand brand,
                                @RequestParam(defaultValue = "1", required = false) int page,
                                @RequestParam(defaultValue = "10", required = false) int size) {
-        log.info("分页请求品牌数据...");
+        log.info("分页请求品牌数据：brand=[{}], page=[{}], size=[{}]", brand, page, size);
         return brandService.search(brand, page, size);
     }
 
     @PostMapping("/")
     public JsonResult add(@RequestBody TbBrand brand) {
-        log.info("添加品牌数据...");
+        log.info("添加品牌数据：brand=[{}]", brand);
         try {
             brandService.add(brand);
-            log.info("添加成功...");
-            return JsonResult.ok("添加成功");
+            return JsonResult.ok();
         } catch (Exception e) {
-            log.error("添加失败：{}", e.getMessage());
+            log.error("添加失败原因：[{}]", e.getMessage());
             e.printStackTrace();
-            return JsonResult.fail("添加失败");
+            return JsonResult.fail(MsgEnum.ADD_FAILED.getMsg());
         }
     }
 
     @GetMapping("/{id}")
-    public TbBrand findOne(@PathVariable Long id){
-        log.info("查找Id为{}的品牌数据！", id);
-        return brandService.findOne(id);
+    public TbBrand findOne(@PathVariable Long id) {
+        log.info("查找Id为[{}]的品牌数据！", id);
+        TbBrand one = brandService.findOne(id);
+        log.info("查询到的品牌数据为：[{}]", one);
+        return one;
     }
 
     @PutMapping("/{id}")
-    public JsonResult update(@PathVariable Long id, @RequestBody TbBrand brand){
-        log.info("修改品牌数据...");
+    public JsonResult update(@PathVariable Long id, @RequestBody TbBrand brand) {
         try {
             brand.setId(id);
+            log.info("修改品牌数据：brand=[{}]", brand);
             brandService.update(brand);
-            log.info("修改成功...");
-            return JsonResult.ok("修改成功");
+            return JsonResult.ok();
         } catch (Exception e) {
-            log.error("修改失败：{}", e.getMessage());
+            log.error("修改失败原因：[{}]", e.getMessage());
             e.printStackTrace();
-            return JsonResult.fail("修改失败");
+            return JsonResult.fail(MsgEnum.UPDATE_FAILED.getMsg());
         }
     }
 
     @DeleteMapping("/")
-    public JsonResult delete(@RequestBody Long[] ids){
-        log.info("删除品牌数据：{}", Arrays.asList(ids));
+    public JsonResult delete(@RequestBody Long[] ids) {
+        log.info("删除品牌数据：ids=[{}]", Arrays.asList(ids));
         try {
             brandService.delete(ids);
-            log.info("删除成功...");
-            return JsonResult.ok("删除成功");
+            return JsonResult.ok();
         } catch (Exception e) {
-            log.error("删除失败：{}", e.getMessage());
+            log.error("删除失败原因：[{}]", e.getMessage());
             e.printStackTrace();
-            return JsonResult.fail("删除失败");
+            return JsonResult.fail(MsgEnum.DELETE_FAILED.getMsg());
         }
     }
 
     @GetMapping("/options")
-    public List<Map> selectBrandOptionList(){
+    public List<Map> selectBrandOptionList() {
         return brandService.selectBrandOptionList();
     }
 
