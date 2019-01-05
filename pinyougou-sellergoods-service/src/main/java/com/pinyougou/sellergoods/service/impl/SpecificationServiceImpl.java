@@ -27,7 +27,7 @@ import java.util.Map;
  *
  * @author Administrator
  */
-@Service
+@Service(timeout = 5000)
 @Component("specificationService")
 @Slf4j
 public class SpecificationServiceImpl implements ISpecificationService {

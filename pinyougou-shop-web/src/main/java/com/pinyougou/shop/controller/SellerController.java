@@ -29,7 +29,7 @@ public class SellerController {
         return sellerService.findAll();
     }
 
-    @Reference
+    @Reference(timeout = 5000)
     private ISellerService sellerService;
 
 

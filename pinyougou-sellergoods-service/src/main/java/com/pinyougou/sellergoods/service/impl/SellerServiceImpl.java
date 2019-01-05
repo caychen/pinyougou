@@ -24,8 +24,7 @@ import java.util.List;
  * Date:         2018/10/27
  * Desc:
  */
-
-@Service
+@Service(timeout = 5000)
 @Component("sellerService")
 @Slf4j
 public class SellerServiceImpl implements ISellerService {

@@ -24,7 +24,7 @@ import java.util.List;
  * Desc:
  */
 
-@Service
+@Service(timeout = 5000)
 @Component("itemCatService")
 @Slf4j
 public class ItemCatServiceImpl implements IItemCatService {

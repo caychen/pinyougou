@@ -23,7 +23,7 @@ import java.util.Map;
  *
  * @author Administrator
  */
-@Service
+@Service(timeout = 5000)
 @Component("typeTemplateService")
 @Slf4j
 public class TypeTemplateServiceImpl implements ITypeTemplateService {

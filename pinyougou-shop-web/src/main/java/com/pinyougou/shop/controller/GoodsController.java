@@ -19,7 +19,7 @@ import java.util.List;
 @Slf4j
 public class GoodsController {
 
-    @Reference
+    @Reference(timeout = 5000)
     private IGoodsService goodsService;
 
     /**

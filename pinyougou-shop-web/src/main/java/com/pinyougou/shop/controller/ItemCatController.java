@@ -22,7 +22,7 @@ import java.util.List;
 @Slf4j
 public class ItemCatController {
 
-    @Reference
+    @Reference(timeout = 5000)
     private IItemCatService itemCatService;
 
     /**

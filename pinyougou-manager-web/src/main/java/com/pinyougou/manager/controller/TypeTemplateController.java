@@ -23,7 +23,7 @@ import java.util.Map;
 @Slf4j
 public class TypeTemplateController {
 
-    @Reference
+    @Reference(timeout = 5000)
     private ITypeTemplateService typeTemplateService;
 
     /**

@@ -19,7 +19,7 @@ import java.util.Map;
 @Slf4j
 public class SpecificationController {
 
-    @Reference
+    @Reference(timeout = 5000)
     private ISpecificationService specificationService;
 
     /**

@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Service(timeout = 5000)
 @Component("brandService")
 @Slf4j
 public class BrandServiceImpl implements IBrandService {
