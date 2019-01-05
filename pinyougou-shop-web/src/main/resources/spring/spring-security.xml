@@ -5,13 +5,17 @@
              xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
              http://www.springframework.org/schema/beans/spring-beans.xsd
-             http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+             http://www.springframework.org/schema/security
+             http://www.springframework.org/schema/security/spring-security.xsd
+             http://code.alibabatech.com/schema/dubbo
+             http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
     <!-- 静态文件 -->
     <http pattern="/css/**" security="none"></http>
     <http pattern="/img/**" security="none"></http>
     <http pattern="/js/**" security="none"></http>
     <http pattern="/plugins/**" security="none"></http>
+    <http pattern="/druid/**" security="none"></http>
 
     <!-- 商家入驻保存 -->
     <http pattern="/seller/" security="none"></http>

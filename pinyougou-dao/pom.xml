@@ -49,11 +49,7 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-        <!-- 连接池 -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>com.pinyougou</groupId>
             <artifactId>pinyougou-entity</artifactId>
