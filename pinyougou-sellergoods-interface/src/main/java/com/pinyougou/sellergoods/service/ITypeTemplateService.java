@@ -57,6 +57,10 @@ public interface ITypeTemplateService {
      */
     void delete(Long[] ids);
 
-
+    /**
+     * 获取规格选项列表
+     *
+     * @return
+     */
     List<Map> selectTypeTemplateOptionList();
 }

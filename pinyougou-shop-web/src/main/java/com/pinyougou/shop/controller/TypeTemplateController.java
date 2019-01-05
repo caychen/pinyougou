@@ -121,5 +121,5 @@ public class TypeTemplateController {
 	public List<Map> selectTypeTemplateOptionList(){
 		return typeTemplateService.selectTypeTemplateOptionList();
 	}
-	
+
 }

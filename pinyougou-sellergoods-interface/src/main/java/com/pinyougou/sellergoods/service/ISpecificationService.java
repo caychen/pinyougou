@@ -66,4 +66,12 @@ public interface ISpecificationService {
      */
     List<Map> selectSpecificationOptionList();
 
+
+    /**
+     * 根据typeTemplateId获取规格选项
+     *
+     * @param typeTemplateId
+     * @return
+     */
+    List<Map> findSpecificationOptionsByTypeTemplateId(Long typeTemplateId);
 }

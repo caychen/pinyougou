@@ -1,5 +1,5 @@
 //控制层
-app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'uploadService', 'itemCatService', 'typeTemplateService', function ($scope, $controller, goodsService, uploadService, itemCatService, typeTemplateService) {
+app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'uploadService', 'itemCatService', 'typeTemplateService', 'specificationService', function ($scope, $controller, goodsService, uploadService, itemCatService, typeTemplateService, specificationService) {
 
     $controller('baseController', {
         $scope: $scope
@@ -166,16 +166,64 @@ app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'upl
         }
     });
 
+    //读取模板ID后，读取品牌列表、扩展属性、规格列表
     $scope.$watch('entity.goods.typeTemplateId', function(newValue, oldValue){
         if(typeof newValue !== 'undefined' && newValue != null) {
             typeTemplateService.findOne(newValue).then(function (response) {
+                // 模板对象
                 $scope.typeTemplate = response.data;
 
+                //品牌列表类型转换
                 $scope.typeTemplate.brandIds = JSON.parse($scope.typeTemplate.brandIds);
+
+                //扩展属性
+                $scope.entity.goodsDesc.customAttributeItems = JSON.parse($scope.typeTemplate.customAttributeItems);
+            }, function (reason) {
+
+            });
+
+            //查询该模版下的规格选项
+            specificationService.findSpecificationOptionsByTypeTemplateId(newValue).then(function(response){
+                $scope.specList = response.data;
             }, function (reason) {
 
             });
         }
     });
+
+    //创建sku列表
+    $scope.createItemList = function(){
+        //列表初始化
+        $scope.entity.itemList = [{spec:{}, price:0, num: 9999, status: '0', isDefault: '0'}];
+
+        var items = $scope.entity.goodsDesc.specificationItems;
+
+        for(var i = 0; i < items.length; ++i){
+            addColumn($scope.entity.itemList, items)
+        }
+    }
+
+    /**
+     * 在原有行的基础上增加行
+     *
+     * @param list：原有行
+     * @param columnName：列名
+     * @param columnValues：列值（一个或多个）
+     */
+    addColumn = function(list, columnName, columnValues){
+        var newList = [];
+
+        for(var i = 0; i < list.length; ++i){
+            var oldRow = list[i];
+            for(var j = 0; j < columnValues.length; ++j){
+                //深拷贝
+                var newRow = JSON.parse(JSON.stringify(oldRow));
+                newRow.spec[columnName] = columnValues[j];
+                newList.push(newRow);
+            }
+        }
+
+        return newList;
+    }
 
 }]);
