@@ -1,14 +1,14 @@
 package com.pinyougou.sellergoods.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.pinyougou.entity.TbGoods;
-import com.pinyougou.entity.TbGoodsExample;
+import com.pinyougou.entity.*;
 import com.pinyougou.group.GoodsGroup;
-import com.pinyougou.mapper.TbGoodsDescMapper;
-import com.pinyougou.mapper.TbGoodsMapper;
+import com.pinyougou.mapper.*;
 import com.pinyougou.page.PageResult;
 import com.pinyougou.sellergoods.service.IGoodsService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author:       Caychen
@@ -35,6 +37,18 @@ public class GoodsServiceImpl implements IGoodsService {
 
     @Autowired
     private TbGoodsDescMapper tbGoodsDescMapper;
+
+    @Autowired
+    private TbItemMapper tbItemMapper;
+
+    @Autowired
+    private TbItemCatMapper tbItemCatMapper;
+
+    @Autowired
+    private TbBrandMapper tbBrandMapper;
+
+    @Autowired
+    private TbSellerMapper tbSellerMapper;
 
     @Override
     public List<TbGoods> findAll() {
@@ -89,7 +103,67 @@ public class GoodsServiceImpl implements IGoodsService {
         //获取goods的id
         goodsGroup.getGoodsDesc().setGoodsId(goodsGroup.getGoods().getId());
         tbGoodsDescMapper.insert(goodsGroup.getGoodsDesc());
+
+        if (StringUtils.equals(goodsGroup.getGoods().getIsEnableSpec(), "1")) {
+
+            //规格选项
+            goodsGroup.getItemList().stream().forEach(item -> {
+                //标题
+                String title = goodsGroup.getGoods().getGoodsName();
+                Map<String, Object> map = JSON.parseObject(item.getSpec());
+                title += " " + Joiner.on(" ").join(map.values());
+                item.setTitle(title);
+                setItemValues(goodsGroup, item);
+
+                tbItemMapper.insert(item);
+            });
+        } else {
+
+            TbItem item = new TbItem();
+            item.setTitle(goodsGroup.getGoods().getGoodsName());
+            item.setPrice(goodsGroup.getGoods().getPrice());
+            item.setNum(9999);//默认库存
+            item.setStatus("1");
+            item.setIsDefault("1");
+            item.setSpec("{}");
+
+            setItemValues(goodsGroup, item);
+
+            tbItemMapper.insert(item);
+        }
     }
+
+    private void setItemValues(GoodsGroup goodsGroup, TbItem item) {
+        //分类id:三级分类
+        item.setCategoryid(goodsGroup.getGoods().getCategory3Id());
+        item.setCreateTime(new Date());
+        item.setUpdateTime(new Date());
+
+        //商品id
+        item.setGoodsId(goodsGroup.getGoods().getId());
+
+        //商家id
+        item.setSellerId(goodsGroup.getGoods().getSellerId());
+
+        //分类名称
+        TbItemCat tbItemCat = tbItemCatMapper.selectByPrimaryKey(goodsGroup.getGoods().getCategory3Id());
+        item.setCategory(tbItemCat.getName());
+
+        //品牌名称
+        TbBrand tbBrand = tbBrandMapper.selectByPrimaryKey(goodsGroup.getGoods().getBrandId());
+        item.setBrand(tbBrand.getName());
+
+        //商家名称(店铺)
+        TbSeller tbSeller = tbSellerMapper.selectByPrimaryKey(goodsGroup.getGoods().getSellerId());
+        item.setSeller(tbSeller.getNickName());
+
+        //图片
+        List<Map> imageList = JSON.parseArray(goodsGroup.getGoodsDesc().getItemImages(), Map.class);
+        if (imageList.size() > 0) {
+            item.setImage((String) imageList.get(0).get("url"));
+        }
+    }
+
 
     @Override
     @Transactional

@@ -227,7 +227,7 @@ app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'upl
         var items = $scope.entity.goodsDesc.specificationItems;
 
         for (var i = 0; i < items.length; ++i) {
-            addColumn($scope.entity.itemList, items)
+            $scope.entity.itemList = addColumn($scope.entity.itemList, items[i].attributeName, items[i].attributeValue);
         }
     }
 
