@@ -28,7 +28,7 @@ public class JsonResult implements Serializable {
      *
      * @return
      */
-    public static JsonResult ok(){
+    public static JsonResult ok() {
         return JsonResult.ok(null);
     }
 
@@ -38,17 +38,17 @@ public class JsonResult implements Serializable {
      * @param msg
      * @return
      */
-    public static JsonResult ok(String msg){
+    public static JsonResult ok(String msg) {
         return JsonResult.ok(msg, null);
     }
 
     /**
      * 正常：需要返回数据
      *
-     * @param res   需要被返回的数据
+     * @param res 需要被返回的数据
      * @return
      */
-    public static JsonResult ok(Object res){
+    public static JsonResult ok(Object res) {
         return new JsonResult(true, "", res);
     }
 
@@ -59,7 +59,7 @@ public class JsonResult implements Serializable {
      * @param res
      * @return
      */
-    public static JsonResult ok(String msg, Object res){
+    public static JsonResult ok(String msg, Object res) {
         return new JsonResult(true, msg, res);
     }
 
@@ -68,17 +68,17 @@ public class JsonResult implements Serializable {
      *
      * @return
      */
-    public static JsonResult fail(){
+    public static JsonResult fail() {
         return JsonResult.fail(null);
     }
 
     /**
      * 错误：需要返回错误消息
      *
-     * @param msg   错误消息
+     * @param msg 错误消息
      * @return
      */
-    public static JsonResult fail(String msg){
+    public static JsonResult fail(String msg) {
         return new JsonResult(false, msg, null);
     }
 }

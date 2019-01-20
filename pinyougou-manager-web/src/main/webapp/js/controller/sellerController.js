@@ -113,9 +113,9 @@ app.controller('sellerController', ['$scope', '$controller', 'sellerService', fu
     //更新状态
     $scope.updateStatus = function (sellerId, status) {
         sellerService.updateStatus(sellerId, status).then(function (response) {
-                if(response.data.success){
+                if (response.data.success) {
                     $scope.reload();
-                }else{
+                } else {
                     swal(response.data.message, "", "error");
                 }
             }, function (reason) {

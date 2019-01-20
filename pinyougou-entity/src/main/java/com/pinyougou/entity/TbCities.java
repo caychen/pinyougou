@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /**
  * 城市
- *
  */
 @Data
 public class TbCities implements Serializable {

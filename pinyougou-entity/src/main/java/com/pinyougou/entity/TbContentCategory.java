@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /**
  * 内容分类
- *
  */
 @Data
 public class TbContentCategory implements Serializable {

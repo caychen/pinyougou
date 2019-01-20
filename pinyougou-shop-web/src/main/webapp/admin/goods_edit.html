@@ -194,10 +194,11 @@
 			                                <div class="col-md-2 title"><span ng-bind="spec.text"></span></div>
 					                        <div class="col-md-10 data">
 					                            <span ng-repeat="option in spec.options">
-					                            	<input  type="checkbox" ><span ng-bind="option.optionName"></span>
+					                            	<input  type="checkbox" ng-click="updateSpecAttribute($event, spec.text, option.optionName);"><span ng-bind="option.optionName"></span>
 					                            </span>
 					                        </div>
-		                                </div>   
+		                                </div>
+										{{entity.goodsDesc.specificationItems}}
 	                                </div>
 	
 	                                

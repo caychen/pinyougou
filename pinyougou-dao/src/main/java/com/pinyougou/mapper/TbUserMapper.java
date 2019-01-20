@@ -2,8 +2,9 @@ package com.pinyougou.mapper;
 
 import com.pinyougou.entity.TbUser;
 import com.pinyougou.entity.TbUserExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface TbUserMapper {
     int countByExample(TbUserExample example);

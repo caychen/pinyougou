@@ -7,7 +7,6 @@ import java.util.Date;
 
 /**
  * 商家
- *
  */
 @Data
 public class TbSeller implements Serializable {

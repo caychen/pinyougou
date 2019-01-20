@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /**
  * 商品类型模版
- *
  */
 @Data
 public class TbTypeTemplate implements Serializable {

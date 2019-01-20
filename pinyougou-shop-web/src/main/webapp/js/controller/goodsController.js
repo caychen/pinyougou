@@ -94,9 +94,9 @@ app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'upl
     };
 
     $scope.imageEntity = {};
-    $scope.uploadFile = function(){
-        uploadService.uploadFile().then(function(response){
-            if(response.data.success){
+    $scope.uploadFile = function () {
+        uploadService.uploadFile().then(function (response) {
+            if (response.data.success) {
                 $scope.imageEntity.url = response.data.data;
             }
         }, function (reason) {
@@ -104,21 +104,31 @@ app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'upl
         })
     };
 
-    $scope.entity = {goods:{category2Id: undefined, category3Id: undefined}, goodsDesc: {itemImages: []}};
+    $scope.entity = {
+        goods: {
+            category2Id: undefined,
+            category3Id: undefined
+        },
+        goodsDesc: {
+            itemImages: [],
+            specificationItems: []
+        }
+    };
+
     //将当前上传的图片实体存入图片列表
-    $scope.add_image_entity = function(){
-        if(($scope.imageEntity.color !== '' && typeof $scope.imageEntity.color !== 'undefined') && $scope.imageEntity.url !== ''){
+    $scope.add_image_entity = function () {
+        if (($scope.imageEntity.color !== '' && typeof $scope.imageEntity.color !== 'undefined') && $scope.imageEntity.url !== '') {
             $scope.entity.goodsDesc.itemImages.push($scope.imageEntity);
 
             $scope.imageEntity = {};
-        }else{
+        } else {
             swal("请补充完整！", "", "warning");
-            return ;
+            return;
         }
     };
 
     //移除图片
-    $scope.remove_image_entity = function(index){
+    $scope.remove_image_entity = function (index) {
         $scope.entity.goodsDesc.itemImages.splice(index, 1);
     };
 
@@ -126,13 +136,13 @@ app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'upl
     subIndex：表示分类级别，1为一级分类，以此类推
     parentId：表示父id
      */
-    $scope.selectItemCatList = function(subIndex, parentId){
-        itemCatService.findByParentId(parentId).then(function(response){
-            if(subIndex == 1){
+    $scope.selectItemCatList = function (subIndex, parentId) {
+        itemCatService.findByParentId(parentId).then(function (response) {
+            if (subIndex == 1) {
                 $scope.itemCatList1 = response.data;
-            }else if (subIndex == 2){
+            } else if (subIndex == 2) {
                 $scope.itemCatList2 = response.data;
-            }else if(subIndex == 3){
+            } else if (subIndex == 3) {
                 $scope.itemCatList3 = response.data;
             }
         }, function (reason) {
@@ -141,23 +151,23 @@ app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'upl
     };
 
     //监控
-    $scope.$watch('entity.goods.category1Id', function(newValue, oldValue){
+    $scope.$watch('entity.goods.category1Id', function (newValue, oldValue) {
         $scope.entity.goods.category2Id = undefined;
         $scope.entity.goods.category3Id = undefined;
         $scope.entity.goods.typeTemplateId = undefined;
-        if(typeof newValue !== 'undefined' && newValue != null){
+        if (typeof newValue !== 'undefined' && newValue != null) {
             $scope.selectItemCatList(2, newValue);
         }
     });
 
-    $scope.$watch('entity.goods.category2Id', function(newValue, oldValue){
-        if(typeof newValue !== 'undefined' && newValue != null){
+    $scope.$watch('entity.goods.category2Id', function (newValue, oldValue) {
+        if (typeof newValue !== 'undefined' && newValue != null) {
             $scope.selectItemCatList(3, newValue);
         }
     });
 
-    $scope.$watch('entity.goods.category3Id', function(newValue, oldValue){
-        if(typeof newValue !== 'undefined' && newValue != null) {
+    $scope.$watch('entity.goods.category3Id', function (newValue, oldValue) {
+        if (typeof newValue !== 'undefined' && newValue != null) {
             itemCatService.findOne(newValue).then(function (response) {
                 $scope.entity.goods.typeTemplateId = response.data.typeId;
             }, function (reason) {
@@ -167,8 +177,8 @@ app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'upl
     });
 
     //读取模板ID后，读取品牌列表、扩展属性、规格列表
-    $scope.$watch('entity.goods.typeTemplateId', function(newValue, oldValue){
-        if(typeof newValue !== 'undefined' && newValue != null) {
+    $scope.$watch('entity.goods.typeTemplateId', function (newValue, oldValue) {
+        if (typeof newValue !== 'undefined' && newValue != null) {
             typeTemplateService.findOne(newValue).then(function (response) {
                 // 模板对象
                 $scope.typeTemplate = response.data;
@@ -183,7 +193,7 @@ app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'upl
             });
 
             //查询该模版下的规格选项
-            specificationService.findSpecificationOptionsByTypeTemplateId(newValue).then(function(response){
+            specificationService.findSpecificationOptionsByTypeTemplateId(newValue).then(function (response) {
                 $scope.specList = response.data;
             }, function (reason) {
 
@@ -191,14 +201,32 @@ app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'upl
         }
     });
 
+    $scope.updateSpecAttribute = function ($event, name, value) {
+        var obj = $scope.searchObjectByKey($scope.entity.goodsDesc.specificationItems, "attributeName", name);
+        if (obj != null) {
+            if ($event.target.checked) {
+                obj.attributeValue.push(value);
+            } else {
+                obj.attributeValue.splice(obj.attributeValue.indexOf(value), 1);//移除选项
+                //如果选项都取消了，将此条记录移除
+                if (obj.attributeValue.length == 0) {
+                    $scope.entity.goodsDesc.specificationItems.splice(
+                        $scope.entity.goodsDesc.specificationItems.indexOf(obj), 1);
+                }
+            }
+        } else {
+            $scope.entity.goodsDesc.specificationItems.push({"attributeName": name, "attributeValue": [value]});
+        }
+    };
+
     //创建sku列表
-    $scope.createItemList = function(){
+    $scope.createItemList = function () {
         //列表初始化
-        $scope.entity.itemList = [{spec:{}, price:0, num: 9999, status: '0', isDefault: '0'}];
+        $scope.entity.itemList = [{spec: {}, price: 0, num: 9999, status: '0', isDefault: '0'}];
 
         var items = $scope.entity.goodsDesc.specificationItems;
 
-        for(var i = 0; i < items.length; ++i){
+        for (var i = 0; i < items.length; ++i) {
             addColumn($scope.entity.itemList, items)
         }
     }
@@ -210,12 +238,12 @@ app.controller('goodsController', ['$scope', '$controller', 'goodsService', 'upl
      * @param columnName：列名
      * @param columnValues：列值（一个或多个）
      */
-    addColumn = function(list, columnName, columnValues){
+    addColumn = function (list, columnName, columnValues) {
         var newList = [];
 
-        for(var i = 0; i < list.length; ++i){
+        for (var i = 0; i < list.length; ++i) {
             var oldRow = list[i];
-            for(var j = 0; j < columnValues.length; ++j){
+            for (var j = 0; j < columnValues.length; ++j) {
                 //深拷贝
                 var newRow = JSON.parse(JSON.stringify(oldRow));
                 newRow.spec[columnName] = columnValues[j];

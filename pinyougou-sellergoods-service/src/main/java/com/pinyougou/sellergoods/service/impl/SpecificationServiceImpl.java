@@ -177,7 +177,7 @@ public class SpecificationServiceImpl implements ISpecificationService {
 
         mapList.stream().forEach(map -> {
             TbSpecificationOptionExample example = new TbSpecificationOptionExample();
-            example.createCriteria().andSpecIdEqualTo(new Long((Integer)map.get("id")));
+            example.createCriteria().andSpecIdEqualTo(new Long((Integer) map.get("id")));
             List<TbSpecificationOption> optionList = specificationOptionMapper.selectByExample(example);
 
             map.put("options", optionList);

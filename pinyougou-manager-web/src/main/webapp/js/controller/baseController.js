@@ -32,7 +32,7 @@ app.controller('baseController', ['$scope', function ($scope) {
     };
 
     $scope.collectValue = function (jsonToString, key) {
-        if(jsonToString == null || jsonToString === ''){
+        if (jsonToString == null || jsonToString === '') {
             return null;
         }
 

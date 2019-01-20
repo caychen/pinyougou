@@ -7,7 +7,6 @@ import java.util.Date;
 
 /**
  * 运费模板
- *
  */
 @Data
 public class TbFreightTemplate implements Serializable {

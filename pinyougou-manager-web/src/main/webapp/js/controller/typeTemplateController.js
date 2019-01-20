@@ -101,9 +101,9 @@ app.controller('typeTemplateController', ['$scope', '$controller', 'typeTemplate
 
     //读取品牌列表
     $scope.findBrandList = function () {
-        brandService.selectBrandOptionList().then( function (response) {
+        brandService.selectBrandOptionList().then(function (response) {
             $scope.brandList.data = response.data;
-        }, function(err){
+        }, function (err) {
             swal("网络异常，请稍后重试!", "", "error");
         });
     };
@@ -112,9 +112,9 @@ app.controller('typeTemplateController', ['$scope', '$controller', 'typeTemplate
 
     //读取规格列表
     $scope.findSpecList = function () {
-        specificationService.selectSpecificationOptionList().then( function (response) {
+        specificationService.selectSpecificationOptionList().then(function (response) {
             $scope.specList.data = response.data;
-        }, function(err){
+        }, function (err) {
             swal("网络异常，请稍后重试!", "", "error");
         });
     };

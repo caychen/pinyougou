@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /**
  * SPU描述
- *
  */
 @Data
 public class TbGoodsDesc implements Serializable {

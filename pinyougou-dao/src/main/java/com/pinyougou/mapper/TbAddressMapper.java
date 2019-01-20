@@ -2,8 +2,9 @@ package com.pinyougou.mapper;
 
 import com.pinyougou.entity.TbAddress;
 import com.pinyougou.entity.TbAddressExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface TbAddressMapper {
     int countByExample(TbAddressExample example);

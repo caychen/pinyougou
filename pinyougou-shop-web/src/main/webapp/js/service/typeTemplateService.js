@@ -50,7 +50,7 @@ app.service('typeTemplateService', ['$http', function ($http) {
     this.findTypeTemplateList = function () {
         return $http({
             url: '../typeTemplate/options',
-            method:'get'
+            method: 'get'
         })
     };
 }]);

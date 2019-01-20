@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /**
  * 内容
- *
  */
 @Data
 public class TbContent implements Serializable {

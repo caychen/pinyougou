@@ -2,8 +2,9 @@ package com.pinyougou.mapper;
 
 import com.pinyougou.entity.TbContentCategory;
 import com.pinyougou.entity.TbContentCategoryExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface TbContentCategoryMapper {
     int countByExample(TbContentCategoryExample example);

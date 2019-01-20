@@ -1,9 +1,9 @@
-app.service("loginService", ['$http', function($http){
+app.service("loginService", ['$http', function ($http) {
 
-    this.getLoginName = function(){
-       return $http({
-           url:'../login/name',
-           method:'get'
-       });
-   }
+    this.getLoginName = function () {
+        return $http({
+            url: '../login/name',
+            method: 'get'
+        });
+    }
 }]);

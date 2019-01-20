@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /**
  * 品牌
- *
  */
 @Data
 public class TbBrand implements Serializable {

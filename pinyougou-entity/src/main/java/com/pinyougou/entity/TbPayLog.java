@@ -7,7 +7,6 @@ import java.util.Date;
 
 /**
  * 交易记录
- *
  */
 @Data
 public class TbPayLog implements Serializable {

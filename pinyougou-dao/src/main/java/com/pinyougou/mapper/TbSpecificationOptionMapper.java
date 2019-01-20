@@ -2,8 +2,9 @@ package com.pinyougou.mapper;
 
 import com.pinyougou.entity.TbSpecificationOption;
 import com.pinyougou.entity.TbSpecificationOptionExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface TbSpecificationOptionMapper {
     int countByExample(TbSpecificationOptionExample example);

@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 
 /**
  * SPU
- *
  */
 @Data
 public class TbGoods implements Serializable {

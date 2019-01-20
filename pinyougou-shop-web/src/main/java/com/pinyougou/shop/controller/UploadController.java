@@ -22,7 +22,7 @@ public class UploadController {
     private String fileServerUrl;
 
     @PostMapping("/upload")
-    public JsonResult upload(MultipartFile file){
+    public JsonResult upload(MultipartFile file) {
 
         try {
             FastDFSClient fastDFSClient = new FastDFSClient("classpath:config/fastdfs_client.conf");

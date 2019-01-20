@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /**
  * 县区
- *
  */
 @Data
 public class TbAreas implements Serializable {

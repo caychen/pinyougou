@@ -119,9 +119,9 @@ public class SpecificationController {
 
     @GetMapping("/options")
     public List<Map> selectSpecificationOptionList(@RequestParam(name = "id", required = false) Long typeTemplateId) {
-        if(typeTemplateId == null) {
+        if (typeTemplateId == null) {
             return specificationService.selectSpecificationOptionList();
-        }else{
+        } else {
             return specificationService.findSpecificationOptionsByTypeTemplateId(typeTemplateId);
         }
     }

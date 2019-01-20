@@ -2,10 +2,10 @@ package com.pinyougou.mapper;
 
 import com.pinyougou.entity.TbSpecification;
 import com.pinyougou.entity.TbSpecificationExample;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import java.util.Map;
-
-import org.apache.ibatis.annotations.Param;
 
 public interface TbSpecificationMapper {
     int countByExample(TbSpecificationExample example);

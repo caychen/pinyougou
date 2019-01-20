@@ -8,7 +8,6 @@ import java.util.Date;
 
 /**
  * 商品
- *
  */
 @Data
 public class TbItem implements Serializable {

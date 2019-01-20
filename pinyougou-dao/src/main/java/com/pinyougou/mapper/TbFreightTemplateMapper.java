@@ -2,8 +2,9 @@ package com.pinyougou.mapper;
 
 import com.pinyougou.entity.TbFreightTemplate;
 import com.pinyougou.entity.TbFreightTemplateExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface TbFreightTemplateMapper {
     int countByExample(TbFreightTemplateExample example);

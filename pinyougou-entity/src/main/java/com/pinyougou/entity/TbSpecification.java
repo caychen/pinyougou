@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /**
  * 规格
- *
  */
 @Data
 public class TbSpecification implements Serializable {

@@ -7,7 +7,6 @@ import java.util.Date;
 
 /**
  * 用户
- *
  */
 @Data
 public class TbUser implements Serializable {

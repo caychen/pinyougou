@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 /**
  * 省
- *
  */
 @Data
 public class TbProvinces implements Serializable {

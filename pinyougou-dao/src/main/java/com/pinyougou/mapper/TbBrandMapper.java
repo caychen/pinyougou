@@ -2,10 +2,10 @@ package com.pinyougou.mapper;
 
 import com.pinyougou.entity.TbBrand;
 import com.pinyougou.entity.TbBrandExample;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import java.util.Map;
-
-import org.apache.ibatis.annotations.Param;
 
 public interface TbBrandMapper {
     int countByExample(TbBrandExample example);

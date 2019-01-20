@@ -7,7 +7,6 @@ import java.util.Date;
 
 /**
  * 收货地址
- *
  */
 @Data
 public class TbAddress implements Serializable {

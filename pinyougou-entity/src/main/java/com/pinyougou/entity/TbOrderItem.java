@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 
 /**
  * 订单商品
- *
  */
 @Data
 public class TbOrderItem implements Serializable {
